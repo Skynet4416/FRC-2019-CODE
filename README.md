@@ -9,7 +9,7 @@ All code for Skynet's 2019 robot.
 - [ ] Chassis Code
 - [ ] Elevator Code
 - [ ] Claw Code
-- [ ] Gripper Code
+- [x] Gripper Code
 - [ ] Driver Camera Feed
 - [ ] OI and RobotMap 
 ### Motion Profiling
