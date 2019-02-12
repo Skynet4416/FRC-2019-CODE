@@ -53,9 +53,10 @@ public class ElevatorByJoy extends Command
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
+    //When interrupted - Elevator gets stuck
     @Override
     protected void interrupted()
     {
-        this._elevator.set(0);
+        this._elevator.set(ZERO_VALUE);
     }
 }
