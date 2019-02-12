@@ -17,34 +17,36 @@ import frc.robot.commands.DriveByJoy;
 /**
  * Add your docs here.
  */
-public class Chassis extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-  private TalonSRX _rightMaster = new TalonSRX(RobotMap.Motors.Chassis.MASTER_RIGHT);
-  private TalonSRX _rightSlave = new TalonSRX(RobotMap.Motors.Chassis.SLAVE_RIGHT);
-  private TalonSRX _leftMaster = new TalonSRX(RobotMap.Motors.Chassis.MASTER_LEFT);
-  private TalonSRX _leftSlave = new TalonSRX(RobotMap.Motors.Chassis.SLAVE_LEFT);
+public class Chassis extends Subsystem
+{
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
+    private TalonSRX _rightMaster = new TalonSRX(RobotMap.Motors.Chassis.MASTER_RIGHT);
+    private TalonSRX _rightSlave = new TalonSRX(RobotMap.Motors.Chassis.SLAVE_RIGHT);
+    private TalonSRX _leftMaster = new TalonSRX(RobotMap.Motors.Chassis.MASTER_LEFT);
+    private TalonSRX _leftSlave = new TalonSRX(RobotMap.Motors.Chassis.SLAVE_LEFT);
 
-  public Chassis()
-  {// sets the slaves to follow the masters
-    _rightSlave.set(ControlMode.Follower, _rightMaster.getDeviceID());
-    _leftSlave.set(ControlMode.Follower, _leftMaster.getDeviceID());
-  }
-
-  public void set(double left, double right)
-  {
-    if (Math.abs(left) > 1 || Math.abs(right) > 1)
-    {// if invalid value is passed
-      System.out.println("Chassis: invalid value recieved to drive");
-      return;
+    public Chassis()
+    {// sets the slaves to follow the masters
+        this._rightSlave.set(ControlMode.Follower, this._rightMaster.getDeviceID());
+        this._leftSlave.set(ControlMode.Follower, this._leftMaster.getDeviceID());
     }
-    _rightMaster.set(ControlMode.PercentOutput, right);
-    _leftMaster.set(ControlMode.PercentOutput, left);
-  }
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    setDefaultCommand(new DriveByJoy());
-  }
+    public void set(double left, double right)
+    {
+        if (Math.abs(left) > 1 || Math.abs(right) > 1)
+        {// if invalid value is passed
+            System.out.println("Chassis: invalid value recieved to drive");
+            return;
+        }
+        this._rightMaster.set(ControlMode.PercentOutput, right);
+        this._leftMaster.set(ControlMode.PercentOutput, left);
+    }
+
+    @Override
+    public void initDefaultCommand()
+    {
+        // Set the default command for a subsystem here.
+        setDefaultCommand(new DriveByJoy());
+    }
 }

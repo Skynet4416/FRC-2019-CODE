@@ -11,44 +11,53 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.*;
 
-public class RollerPush extends Command {
-  private Roller _roller;
-  public static final double TIMEOUT = 0.4;
-  public static final double POWER = 0.7;
-  public RollerPush() {
-    // Use requires() here to declare subsystem dependencies
-    requires(Robot.roller);
-    _roller = Robot.roller;
-  }
+public class RollerPush extends Command
+{
+    private Roller _roller;
+    public static final double TIMEOUT = 0.4;
+    public static final double POWER = 0.7;
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-    setTimeout(TIMEOUT);
-    _roller.set(POWER);
-  }
+    public RollerPush()
+    {
+        // Use requires() here to declare subsystem dependencies
+        requires(Robot.roller);
+        this._roller = Robot.roller;
+    }
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-  }
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize()
+    {
+        setTimeout(TIMEOUT);
+        this._roller.set(POWER);
+    }
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return isTimedOut();
-  }
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute()
+    {
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-    // stopped by default method
-  }
+    }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-    // stopped by interupter
-  }
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished()
+    {
+        return isTimedOut();
+    }
+
+    // Called once after isFinished returns true
+    @Override
+    protected void end()
+    {
+        // stopped by default method
+    }
+
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted()
+    {
+        // stopped by interupter
+    }
 }
