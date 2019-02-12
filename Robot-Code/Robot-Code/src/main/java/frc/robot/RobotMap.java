@@ -31,10 +31,10 @@ public class RobotMap
   {
     public class Chassis
     {
-      public static final int FRONT_LEFT = 0;
-      public static final int FRONT_RIGHT = 0;
-      public static final int REAR_LEFT = 0;
-      public static final int REAR_RIGHT = 0;
+      public static final int MASTER_LEFT = 0;
+      public static final int MASTER_RIGHT = 0;
+      public static final int SLAVE_LEFT = 0;
+      public static final int SLAVE_RIGHT = 0;
     }
     public class Claw
     {

@@ -6,7 +6,7 @@ All code for Skynet's 2019 robot.
 - [ ] Finding Vision Targets and MP integration 
 - [ ] Update Driver HUD Code to Automatic Calibration
 ### Systems
-- [ ] Chassis Code
+- [x] Chassis Code
 - [ ] Elevator Code
 - [ ] Claw Code
 - [x] Gripper Code

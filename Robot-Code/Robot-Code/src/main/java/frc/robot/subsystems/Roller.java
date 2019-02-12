@@ -19,13 +19,8 @@ import frc.robot.commands.RollerStop;
 public class Roller extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private SpeedController _rightMotor;
-  private SpeedController _leftMotor;
-  public Roller()
-  {
-    _rightMotor = new Talon(RobotMap.Motors.Roller.RIGHT);
-    _leftMotor = new Talon(RobotMap.Motors.Roller.LEFT);
-  }
+  private SpeedController _rightMotor = new Talon(RobotMap.Motors.Roller.RIGHT);
+  private SpeedController _leftMotor = new Talon(RobotMap.Motors.Roller.LEFT);
   /**
    * Powers the gripper with supplied input
    * @param power percentage of power to supply to the motors. If invalid, rounded.

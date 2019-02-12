@@ -7,6 +7,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.*;
+import frc.robot.commands.*;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -23,7 +27,30 @@ public class OI {
   // There are a few additional built in buttons you can use. Additionally,
   // by subclassing Button you can create custom triggers and bind those to
   // commands the same as any other Button.
+  private Joystick _leftJoy = new Joystick(RobotMap.Controls.Chassis.LEFT_JOY);
+  private Joystick _rightJoy = new Joystick(RobotMap.Controls.Chassis.RIGHT_JOY);
+  private Joystick _elevatorJoy = new Joystick(RobotMap.Controls.Elevator.ELEVATOR_JOY);
+  private Button _pushBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Roller.PUSH_BTN);
+  private Button _pullBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Roller.PULL_BTN);
 
+  public OI()
+  {
+    _pushBtn.whenPressed(new RollerPush());
+    _pullBtn.whenPressed(new RollerPull()); 
+  }
+
+  public double getLeft()
+  {
+    return _leftJoy.getY();
+  }
+  public double getRight()
+  {
+    return _rightJoy.getY();
+  }
+  public double getElevator()
+  {
+    return _elevatorJoy.getY();
+  }
   //// TRIGGERING COMMANDS WITH BUTTONS
   // Once you have a button, it's trivial to bind it to a button in one of
   // three ways:

@@ -9,46 +9,42 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.Chassis;
 
-public class RollerPull extends Command {
-  private Roller _roller;
-  public static final double TIMEOUT = 0.8;
-  public static final double POWER = -0.5;
-  public RollerPull() {
+public class DriveByJoy extends Command {
+  private Chassis _chassis;
+  public DriveByJoy() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.roller);
-    _roller = Robot.roller;
+    requires(Robot.chassis);
+    _chassis = Robot.chassis;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    setTimeout(TIMEOUT);
-    _roller.set(POWER);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    _chassis.set(Robot.oi.getLeft(), Robot.oi.getRight());
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return isTimedOut();
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    // stopped by default method
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    // stopped by interupter
+   _chassis.set(0, 0); 
   }
 }

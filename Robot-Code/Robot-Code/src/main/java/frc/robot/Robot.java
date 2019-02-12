@@ -22,6 +22,7 @@ public class Robot extends TimedRobot {
   //subsystem declarations
   public static OI oi;
   public static Roller roller;
+  public static Chassis chassis;
 
   /**
    * This function is run when the robot is first started up and should be
