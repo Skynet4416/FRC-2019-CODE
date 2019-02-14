@@ -45,7 +45,9 @@ public class OI
         _pushBtn.whenPressed(new RollerPush());
         _pullBtn.whenPressed(new RollerPull());
         _openBtn.whenPressed(new ClawOpen());
+        _openBtn.whenReleased(new ClawStop());
         _closeBtn.whenPressed(new ClawClose());
+        _closeBtn.whenReleased(new ClawStop());
     }
 
     public double getLeft()

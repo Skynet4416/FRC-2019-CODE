@@ -7,10 +7,10 @@ All code for Skynet's 2019 robot.
 - [ ] Update Driver HUD Code to Automatic Calibration
 ### Systems
 - [x] Chassis Code
-- [ ] Elevator Code
-- [ ] Claw Code
+- [x] Elevator Code
+- [x] Claw Code
 - [x] Gripper Code
 - [ ] Driver Camera Feed
-- [ ] OI and RobotMap 
+- [x] OI and RobotMap 
 ### Motion Profiling
 - [ ] Integrate with Vision and Systems
