@@ -25,6 +25,7 @@ public class Robot extends TimedRobot
     public static Roller roller;
     public static Chassis chassis;
     public static Elevator elevator;
+    public static Claw claw;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -37,6 +38,7 @@ public class Robot extends TimedRobot
         roller = new Roller();
         chassis = new Chassis();
         elevator = new Elevator();
+        claw = new Claw();
     }
 
     /**

@@ -18,11 +18,11 @@ public class Elevator extends Subsystem
     {
         if (Math.abs(power) > 1)
         {
+            // Makes it either 1 or -1 (basically copysign of power to 1)
+            power /= Math.abs(power);
             //unepic println
-            System.out.println("Elevator: invalid value recieved to drive - Cropping");
-            power /= Math.abs(power);  // Makes it either 1 or -1 (basically copysign of power to 1)
+            System.out.println("Elevator: invalid value recieved to drive: Rounding value to: " + power);
         }
-        //Not sure what direction the output will be but kalisch didnt answer so...
         //Positive power goes up and negative goes down (Wanted outcome)
         this._motor1.set(ControlMode.PercentOutput, power);
         this._motor2.set(ControlMode.PercentOutput, power);

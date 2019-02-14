@@ -15,55 +15,66 @@ import frc.robot.commands.*;
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
-public class OI {
-  //// CREATING BUTTONS
-  // One type of button is a joystick button which is any button on a
-  //// joystick.
-  // You create one by telling it which joystick it's on and which button
-  // number it is.
-  // Joystick stick = new Joystick(port);
-  // Button button = new JoystickButton(stick, buttonNumber);
+public class OI
+{
+    //// CREATING BUTTONS
+    // One type of button is a joystick button which is any button on a
+    //// joystick.
+    // You create one by telling it which joystick it's on and which button
+    // number it is.
+    // Joystick stick = new Joystick(port);
+    // Button button = new JoystickButton(stick, buttonNumber);
 
-  // There are a few additional built in buttons you can use. Additionally,
-  // by subclassing Button you can create custom triggers and bind those to
-  // commands the same as any other Button.
-  private Joystick _leftJoy = new Joystick(RobotMap.Controls.Chassis.LEFT_JOY);
-  private Joystick _rightJoy = new Joystick(RobotMap.Controls.Chassis.RIGHT_JOY);
-  private Joystick _elevatorJoy = new Joystick(RobotMap.Controls.Elevator.ELEVATOR_JOY);
-  private Button _pushBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Roller.PUSH_BTN);
-  private Button _pullBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Roller.PULL_BTN);
+    // There are a few additional built in buttons you can use. Additionally,
+    // by subclassing Button you can create custom triggers and bind those to
+    // commands the same as any other Button.
+    //  Chassis joysticks
+    private Joystick _leftJoy = new Joystick(RobotMap.Controls.Chassis.LEFT_JOY);
+    private Joystick _rightJoy = new Joystick(RobotMap.Controls.Chassis.RIGHT_JOY);
+    // Elevator joystick
+    private Joystick _elevatorJoy = new Joystick(RobotMap.Controls.Elevator.ELEVATOR_JOY);
+    // Roller gripper buttons
+    private Button _pushBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Roller.PUSH_BTN);
+    private Button _pullBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Roller.PULL_BTN);
+    // Claw buttons
+    private Button _openBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Claw.OPEN_BTN);
+    private Button _closeBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Claw.CLOSE_BTN);
 
-  public OI()
-  {
-    _pushBtn.whenPressed(new RollerPush());
-    _pullBtn.whenPressed(new RollerPull()); 
-  }
+    public OI()
+    {
+        _pushBtn.whenPressed(new RollerPush());
+        _pullBtn.whenPressed(new RollerPull());
+        _openBtn.whenPressed(new ClawOpen());
+        _closeBtn.whenPressed(new ClawClose());
+    }
 
-  public double getLeft()
-  {
-    return _leftJoy.getY();
-  }
-  public double getRight()
-  {
-    return _rightJoy.getY();
-  }
-  public double getElevator()
-  {
-    return _elevatorJoy.getY();
-  }
-  //// TRIGGERING COMMANDS WITH BUTTONS
-  // Once you have a button, it's trivial to bind it to a button in one of
-  // three ways:
+    public double getLeft()
+    {
+        return _leftJoy.getY();
+    }
 
-  // Start the command when the button is pressed and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenPressed(new ExampleCommand());
+    public double getRight()
+    {
+        return _rightJoy.getY();
+    }
 
-  // Run the command while the button is being held down and interrupt it once
-  // the button is released.
-  // button.whileHeld(new ExampleCommand());
+    public double getElevator()
+    {
+        return _elevatorJoy.getY();
+    }
+    //// TRIGGERING COMMANDS WITH BUTTONS
+    // Once you have a button, it's trivial to bind it to a button in one of
+    // three ways:
 
-  // Start the command when the button is released and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenReleased(new ExampleCommand());
+    // Start the command when the button is pressed and let it run the command
+    // until it is finished as determined by it's isFinished method.
+    // button.whenPressed(new ExampleCommand());
+
+    // Run the command while the button is being held down and interrupt it once
+    // the button is released.
+    // button.whileHeld(new ExampleCommand());
+
+    // Start the command when the button is released and let it run the command
+    // until it is finished as determined by it's isFinished method.
+    // button.whenReleased(new ExampleCommand());
 }
