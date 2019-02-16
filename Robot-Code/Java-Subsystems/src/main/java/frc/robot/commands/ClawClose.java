@@ -15,8 +15,7 @@ import frc.robot.subsystems.*;
 public class ClawClose extends Command
 {
     private Claw _claw;
-    public static final double TIMEOUT = 0.5;
-    public static final double POWER = 0.4206969;  // Epic random values *Sunglasses emoji gere*
+    public static final double POWER = 1;
 
     public ClawClose()
     {
@@ -29,7 +28,6 @@ public class ClawClose extends Command
     @Override
     protected void initialize()
     {
-        setTimeout(TIMEOUT);
         this._claw.set(POWER);
     }
 
@@ -44,7 +42,7 @@ public class ClawClose extends Command
     @Override
     protected boolean isFinished()
     {
-        return isTimedOut();
+        return false;
     }
 
     // Called once after isFinished returns true

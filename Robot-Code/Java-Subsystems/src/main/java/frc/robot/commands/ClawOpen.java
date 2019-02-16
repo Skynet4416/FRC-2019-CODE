@@ -14,8 +14,7 @@ import frc.robot.subsystems.*;
 public class ClawOpen extends Command
 {
     private Claw _claw;
-    public static final double TIMEOUT = 0.5;
-    public static final double POWER = -0.5;
+    public static final double POWER = -1;
 
     public ClawOpen()
     {
@@ -28,7 +27,6 @@ public class ClawOpen extends Command
     @Override
     protected void initialize()
     {
-        setTimeout(TIMEOUT);
         this._claw.set(POWER);
     }
 
@@ -43,7 +41,7 @@ public class ClawOpen extends Command
     @Override
     protected boolean isFinished()
     {
-        return isTimedOut();
+        return false;
     }
 
     // Called once after isFinished returns true
