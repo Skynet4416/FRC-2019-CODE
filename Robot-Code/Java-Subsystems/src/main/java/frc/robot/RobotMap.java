@@ -53,6 +53,13 @@ public class RobotMap
             public static final int MOTOR1 = 0;
             public static final int MOTOR2 = 0;
         }
+
+        public class Climber
+        {
+            public static final int COMPRESSOR = 0;
+            public static final int FORWARD_SOLENOID = 0;
+            public static final int REVERSE_SOLENOID = 0;
+        }
     }
 
     /**
@@ -81,6 +88,11 @@ public class RobotMap
         public class Elevator
         {
             public static final int ELEVATOR_JOY = 0;
+        }
+
+        public class Climber
+        {
+            public static final int PNEU_TGL_BTN = 0;
         }
     }
 }

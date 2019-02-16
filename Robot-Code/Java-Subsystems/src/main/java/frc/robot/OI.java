@@ -39,30 +39,31 @@ public class OI
     // Claw buttons
     private Button _openBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Claw.OPEN_BTN);
     private Button _closeBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Claw.CLOSE_BTN);
-
+    private Button _climbingTgl = new JoystickButton(_elevatorJoy, RobotMap.Controls.Climber.PNEU_TGL_BTN);
     public OI()
     {
-        _pushBtn.whenPressed(new RollerPush());
-        _pullBtn.whenPressed(new RollerPull());
-        _openBtn.whenPressed(new ClawOpen());
-        _openBtn.whenReleased(new ClawStop());
-        _closeBtn.whenPressed(new ClawClose());
-        _closeBtn.whenReleased(new ClawStop());
+        this._pushBtn.whenPressed(new RollerPush());
+        this._pullBtn.whenPressed(new RollerPull());
+        this._openBtn.whenPressed(new ClawOpen());
+        this._openBtn.whenReleased(new ClawStop());
+        this._closeBtn.whenPressed(new ClawClose());
+        this._closeBtn.whenReleased(new ClawStop());
+        this._climbingTgl.whenPressed(new ClimberToggle());
     }
 
     public double getLeft()
     {
-        return _leftJoy.getY();
+        return this._leftJoy.getY();
     }
 
     public double getRight()
     {
-        return _rightJoy.getY();
+        return this._rightJoy.getY();
     }
 
     public double getElevator()
     {
-        return _elevatorJoy.getY();
+        return this._elevatorJoy.getY();
     }
     //// TRIGGERING COMMANDS WITH BUTTONS
     // Once you have a button, it's trivial to bind it to a button in one of

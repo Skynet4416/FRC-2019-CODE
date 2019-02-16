@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motion.BufferedTrajectoryPointStream;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -21,6 +22,7 @@ public class Chassis extends Subsystem
 {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
+    public static final int MIN_POINTS = 10;  // Minimum amount of points to be loaded to the talon at once
     private TalonSRX _rightMaster = new TalonSRX(RobotMap.Motors.Chassis.MASTER_RIGHT);
     private TalonSRX _rightSlave = new TalonSRX(RobotMap.Motors.Chassis.SLAVE_RIGHT);
     private TalonSRX _leftMaster = new TalonSRX(RobotMap.Motors.Chassis.MASTER_LEFT);
@@ -43,6 +45,23 @@ public class Chassis extends Subsystem
         this._leftMaster.set(ControlMode.PercentOutput, left);
     }
 
+    public void setMotionProfiling(BufferedTrajectoryPointStream [] buffers)
+    {
+        if (buffers.length != 2)
+        {
+            System.out.println("Chassis: Somehow the improbable happened.");
+            return;
+        }
+        // Stars the motion profiling
+        this._leftMaster.startMotionProfile(buffers[0], MIN_POINTS, ControlMode.MotionProfile);
+        this._rightMaster.startMotionProfile(buffers[1], MIN_POINTS, ControlMode.MotionProfile);
+    }
+
+    public boolean isMotionProfileFinished()
+    {
+        return this._leftMaster.isMotionProfileFinished() || this._rightMaster.isMotionProfileFinished();
+    }
+    
     @Override
     public void initDefaultCommand()
     {
