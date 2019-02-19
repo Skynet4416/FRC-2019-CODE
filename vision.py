@@ -4,6 +4,7 @@ import numpy as np
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 import math
+import mp_planner
 
 # exit key
 EXIT_KEY = ord("q")
@@ -41,8 +42,7 @@ def light_off():
 def pt_distance(a, b):
 	return np.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
 
-def get_angle(x, y):
-	print(x, y)
+def target_details(x, y, dist):
 	is_reversed = False
 	if (x > y):
 		x, y = y, x
@@ -52,9 +52,17 @@ def get_angle(x, y):
 	
 	alpha = math.atan((y*math.sin(gamma-beta)-x*math.sin(gamma))/
 			(x*math.cos(gamma)-y*math.cos(gamma-beta)+TARGET_DIST))
+	
+	delta = math.acos((-TARGET_DIST**2+4*x**2+4*dist**2)/(8*x*dist))
+	epsilon = math.pi + delta - gamma - alpha
+	target_x = dist*math.cos(epsilon)
+	target_y = dist*math.sin(epsilon)
+	
 	if (is_reversed):
-		return (math.pi / 2) + alpha
-	return (math.pi / 2) - alpha
+		# axis is negative
+		return ((math.pi / 2) + alpha, -target_x, target_y)
+	
+	return ((math.pi / 2) - alpha, target_x, target_y)
 
 # light_on()
 camera = PiCamera()
@@ -120,7 +128,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr",
 			x_avg = sum(x_queue)/QUEUE_SIZE
 			y_avg = sum(y_queue)/QUEUE_SIZE
 			dist = math.sqrt((x_avg**2 + y_avg**2 - 0.02)/2)
-			angle = get_angle(x_avg, y_avg)
+			angle, target_x, target_y = target_details(x_avg, y_avg,
+													   dist)
+			left_prof, right_prof = mp_planner.motion_profiler(target_x,
+														target_y, angle)
 			info = "dist=%f angle=%f" %(round(dist, 2),
 						round(math.degrees(angle), 2))
 			cv2.putText(image, info, (0, RESOLUTION[1]),
