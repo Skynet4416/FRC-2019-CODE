@@ -21,7 +21,21 @@ public class FollowPath extends Command
     private double [][][] _points;  // Points
     private Chassis _chassis;
 
-    public FollowPath(double [][][] points)
+    /*
+     Kalisch told me to write this essay about why I used double [][]... points
+     instead of double [][] pointsL, double [][] pointsR so thats why: The main reason
+     is that I wanted to receive an 3d array and the action ... allows me to get the 3d
+     array instead of 2 2d arrays. Moreover, it allows the caller of this constructor to
+     call it with normal 2d arrays, for instance: new FollowPath(double [][] points1, 
+        double [][] point2) to infinity and beyond!
+     Another reason I believe you code reviewers should allow this piece of code to pass
+     your review is that the fact that this code passes is truly amazing and you should
+     all be so surprised that you will go religious on place and praise Allah all day long.
+     The final reason I would like to mention is that I am asking very nicely of you and
+     if you won't confirm this code, I will be very sad :( so please, I am directing
+     this message to your hearts, please allow this code to pass.
+    */
+    public FollowPath(double [][]... points)
     {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.chassis);
