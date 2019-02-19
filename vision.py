@@ -20,8 +20,9 @@ ITERATIONS = 5
 T_HEIGHT = 0.148
 RESOLUTION = (640, 480)
 V_VIEW_ANGLE = math.radians(10.6) # vertical
-# final calculation
 
+V_MARKER_RATIO = 2.75 # Ratio between the marker height and marker width.
+# final calculation
 def light_on():
 	with SMBusWrapper(1) as bus:
 		msg = i2c_msg.write(0x70, [0x00, 0xFF])	# turn on i2c msg
@@ -67,8 +68,15 @@ for frame in camera.capture_continuous(rawCapture, format="bgr",
 		rect_area = distances[0] * distances[1]
 		if rect_area / cnt_area > 1 + ERROR:
 			continue
-		cv2.drawContours(image, [box], 0, (0,0,255), 2)
+
+		# If the ratio isn't between 2.45 and 3.05, continue
+		if abs((distances[1]/distances[0])-V_MARKER_RATIO) > ERROR:
+			continue
+		
 		cnt_x, cnt_y, cnt_w, cnt_h = cv2.boundingRect(contour)
+		cv2.drawContours(image, [box], 0, (0,0,255), 2)
+
+		#print("Contour ratio: {}".format(distances[1]/distances[0]))
 		cnt_dist = T_HEIGHT * RESOLUTION[1] / (2 * math.tan(V_VIEW_ANGLE) * cnt_h)
 		cv2.putText(image, str(round(cnt_dist, 2)), (cnt_x, cnt_y),
 			cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
