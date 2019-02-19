@@ -4,6 +4,7 @@ import numpy as np
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 import math
+import mp_planner
 
 # exit key
 EXIT_KEY = ord("q")
@@ -129,6 +130,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr",
 			dist = math.sqrt((x_avg**2 + y_avg**2 - 0.02)/2)
 			angle, target_x, target_y = target_details(x_avg, y_avg,
 													   dist)
+			left_prof, right_prof = mp_planner.motion_profiler(target_x,
+														target_y, angle)
 			info = "dist=%f angle=%f" %(round(dist, 2),
 						round(math.degrees(angle), 2))
 			cv2.putText(image, info, (0, RESOLUTION[1]),
