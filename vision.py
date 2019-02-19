@@ -19,10 +19,15 @@ ITERATIONS = 5
 # mark distance calculation
 T_HEIGHT = 0.148
 RESOLUTION = (640, 480)
-V_VIEW_ANGLE = math.radians(10.6) # vertical
-
+V_VIEW_ANGLE = math.radians(7.8) # vertical
+TARGET_DIST = 0.20
 V_MARKER_RATIO = 2.75 # Ratio between the marker height and marker width.
 # final calculation
+x_queue = []
+y_queue = []
+QUEUE_SIZE = 20
+
+
 def light_on():
 	with SMBusWrapper(1) as bus:
 		msg = i2c_msg.write(0x70, [0x00, 0xFF])	# turn on i2c msg
@@ -36,11 +41,27 @@ def light_off():
 def pt_distance(a, b):
 	return np.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
 
+def get_angle(x, y):
+	print(x, y)
+	is_reversed = False
+	if (x > y):
+		x, y = y, x
+		is_reversed = True
+	beta = math.acos((x**2+y**2-TARGET_DIST)/(2*x*y))
+	gamma = math.acos((-x**2+y**2-TARGET_DIST)/(2*TARGET_DIST*x))
+	
+	alpha = math.atan((y*math.sin(gamma-beta)-x*math.sin(gamma))/
+			(x*math.cos(gamma)-y*math.cos(gamma-beta)+TARGET_DIST))
+	if (is_reversed):
+		return (math.pi / 2) + alpha
+	return (math.pi / 2) - alpha
+
 # light_on()
 camera = PiCamera()
 camera.resolution = RESOLUTION
-camera.framerate = 50
+camera.framerate = 90
 camera.iso = 270
+camera.rotation = 270
 camera.shutter_speed = 750
 rawCapture = PiRGBArray(camera, size=RESOLUTION)
 for frame in camera.capture_continuous(rawCapture, format="bgr",
@@ -51,7 +72,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr",
 	hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)	# frame to hsv
 	mask = cv2.inRange(hsv, np.array(LOW), np.array(HIGH))
 	ker = cv2.getStructuringElement(cv2.MORPH_OPEN, (KER_SIZE, KER_SIZE))
-	mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, ker, iterations = ITERATIONS)
+	# mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, ker, iterations = ITERATIONS)
 	filtered = cv2.bitwise_and(image, image, mask=mask)
 	#cv2.imshow("Filtered", filtered)	# display  filtered frame
 	_, contours, __ = cv2.findContours(mask, cv2.RETR_TREE,
@@ -88,9 +109,22 @@ for frame in camera.capture_continuous(rawCapture, format="bgr",
 		else:
 			x = pts[0][1]
 			y = pts[1][1]
-		dist = math.sqrt((x**2 + y**2 - 0.02)/2)
-		cv2.putText(image, "dist=" + str(round(dist, 2)), (0, RESOLUTION[1]),
-			cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+		x_queue.append(x)
+		y_queue.append(y)
+		if len(x_queue) == QUEUE_SIZE + 1:
+			x_queue.pop(0)
+			y_queue.pop(0)
+			x_avg = sum(x_queue)/QUEUE_SIZE
+			y_avg = sum(y_queue)/QUEUE_SIZE
+			dist = math.sqrt((x_avg**2 + y_avg**2 - 0.02)/2)
+			angle = get_angle(x_avg, y_avg)
+			info = "dist=%f angle=%f" %(round(dist, 2),
+						round(math.degrees(angle), 2))
+			cv2.putText(image, info, (0, RESOLUTION[1]),
+				cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+	else:
+		x_queue = []
+		y_queue = []
 	cv2.imshow("contours", image)
 	key = cv2.waitKey(1) & 0xFF	# if exit key is pressed
 	rawCapture.truncate(0)		# clear stream for next image
