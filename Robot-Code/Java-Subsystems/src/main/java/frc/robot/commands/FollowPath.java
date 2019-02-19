@@ -64,11 +64,14 @@ public class FollowPath extends Command
     @Override
     protected void initialize()
     {
+        // Creates buffers for each talon track, I guess
         BufferedTrajectoryPointStream [] buffers = new BufferedTrajectoryPointStream[TALONS];
+        // Sets
         for (int i = 0; i < this._points.length; i++)
         {
             buffers[i] = createBuffer(this._points[i]);
         }
+        // Starts the motion profiling
         this._chassis.setMotionProfiling(buffers);
     }
 

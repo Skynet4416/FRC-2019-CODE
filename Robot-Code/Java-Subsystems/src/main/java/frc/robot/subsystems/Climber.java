@@ -14,29 +14,31 @@ import frc.robot.RobotMap;
 import frc.robot.commands.ClimberStop;
 
 /**
- * Add your docs here.
+ * Climber class
  */
 public class Climber extends Subsystem
 {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    private DoubleSolenoid _solenoid;
-    private Compressor _compressor;
-    private boolean _state;
+    private DoubleSolenoid _solenoid;  // The double solenoid
+    private Compressor _compressor;  // Compressor (maybe not needed)
+    private boolean _isExtended;  // True if the DoubleSolenoid is extended, false otherwise
 
+    // Constructor
     public Climber()
     {
         this._solenoid = new DoubleSolenoid(RobotMap.Motors.Climber.FORWARD_SOLENOID,
                                             RobotMap.Motors.Climber.REVERSE_SOLENOID);
         this._compressor = new Compressor(RobotMap.Motors.Climber.COMPRESSOR);
-        this._compressor.start();
-        this._state = false;
+        this._compressor.start();  // Maybe not needed
+        this._isExtended = false;  // Default state is not extended
     }
 
+    // Toggles the solenoid between extended and not extended
     public void toggleSolenoid()
     {
-        this._state = !this._state;
-        if (this._state)
+        this._isExtended = !this._isExtended;
+        if (this._isExtended)
         {
             this._solenoid.set(DoubleSolenoid.Value.kForward);
         }
@@ -46,6 +48,7 @@ public class Climber extends Subsystem
         }
     }
 
+    // Stops the solenoid
     public void stopSolenoid()
     {
         this._solenoid.set(DoubleSolenoid.Value.kOff);
