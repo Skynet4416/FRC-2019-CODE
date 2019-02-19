@@ -19,7 +19,7 @@ ITERATIONS = 5
 # mark distance calculation
 T_HEIGHT = 0.148
 RESOLUTION = (640, 480)
-V_VIEW_ANGLE = math.radians(7.8) # vertical
+V_VIEW_ANGLE = math.radians(7.89) # vertical
 TARGET_DIST = 0.20
 V_MARKER_RATIO = 2.75 # Ratio between the marker height and marker width.
 # final calculation
@@ -68,6 +68,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr",
 					use_video_port=True):
 	image = frame.array		# convert to cv2 handleable format
 	#cv2.imshow("Raw", image)
+	height, width, _ = image.shape
+	RESOLUTION = (width, height)
+
 	pts = []
 	hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)	# frame to hsv
 	mask = cv2.inRange(hsv, np.array(LOW), np.array(HIGH))
@@ -91,7 +94,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr",
 			continue
 
 		# If the ratio isn't between 2.45 and 3.05, continue
-		if abs((distances[1]/distances[0])-V_MARKER_RATIO) > ERROR:
+		if abs((distances[1]/distances[0])-V_MARKER_RATIO) > ERROR * 3:
 			continue
 		
 		cnt_x, cnt_y, cnt_w, cnt_h = cv2.boundingRect(contour)
