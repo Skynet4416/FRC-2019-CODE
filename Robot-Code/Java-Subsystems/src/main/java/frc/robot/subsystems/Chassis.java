@@ -16,28 +16,32 @@ import frc.robot.RobotMap;
 import frc.robot.commands.DriveByJoy;
 
 /**
- * Add your docs here.
+ * Chassis subsystem
  */
 public class Chassis extends Subsystem
 {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     public static final int MIN_POINTS = 10;  // Minimum amount of points to be loaded to the talon at once
-    private TalonSRX _rightMaster = new TalonSRX(RobotMap.Motors.Chassis.MASTER_RIGHT);
-    private TalonSRX _rightSlave = new TalonSRX(RobotMap.Motors.Chassis.SLAVE_RIGHT);
-    private TalonSRX _leftMaster = new TalonSRX(RobotMap.Motors.Chassis.MASTER_LEFT);
-    private TalonSRX _leftSlave = new TalonSRX(RobotMap.Motors.Chassis.SLAVE_LEFT);
+    private TalonSRX _rightMaster = new TalonSRX(RobotMap.Motors.Chassis.MASTER_RIGHT);  // Leading right talon
+    private TalonSRX _rightSlave = new TalonSRX(RobotMap.Motors.Chassis.SLAVE_RIGHT);  // Following right talon
+    private TalonSRX _leftMaster = new TalonSRX(RobotMap.Motors.Chassis.MASTER_LEFT); // Leading left talon
+    private TalonSRX _leftSlave = new TalonSRX(RobotMap.Motors.Chassis.SLAVE_LEFT);   // Following left talon
 
+    // Constructor
     public Chassis()
-    {// sets the slaves to follow the masters
+    {
+        // sets the slaves to follow the masters
         this._rightSlave.set(ControlMode.Follower, this._rightMaster.getDeviceID());
         this._leftSlave.set(ControlMode.Follower, this._leftMaster.getDeviceID());
     }
 
+    // Controls the chassis in tank drive
     public void set(double left, double right)
     {
         if (Math.abs(left) > 1 || Math.abs(right) > 1)
-        {// if invalid value is passed
+        {
+            // if invalid value is passed
             System.out.println("Chassis: invalid value recieved to drive");
             return;
         }
@@ -45,23 +49,27 @@ public class Chassis extends Subsystem
         this._leftMaster.set(ControlMode.PercentOutput, left);
     }
 
+    // Sets motion profiling for the chassis
     public void setMotionProfiling(BufferedTrajectoryPointStream [] buffers)
     {
+        // No clue how or why but im checking it just in case
         if (buffers.length != 2)
         {
             System.out.println("Chassis: Somehow the improbable happened.");
             return;
         }
-        // Stars the motion profiling
+        // Starts the motion profiling
         this._leftMaster.startMotionProfile(buffers[0], MIN_POINTS, ControlMode.MotionProfile);
         this._rightMaster.startMotionProfile(buffers[1], MIN_POINTS, ControlMode.MotionProfile);
     }
 
+    // Returns true if the motion profiling is done
     public boolean isMotionProfileFinished()
     {
         return this._leftMaster.isMotionProfileFinished() || this._rightMaster.isMotionProfileFinished();
     }
     
+    // Sets default command
     @Override
     public void initDefaultCommand()
     {

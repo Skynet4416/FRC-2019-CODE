@@ -14,7 +14,7 @@ import frc.robot.subsystems.*;
 public class ElevatorByJoy extends Command 
 {
     private Elevator _elevator;
-    public static final double ZERO_VALUE = 0.2;
+    public static final double ZERO_VALUE = 0.2;  // Value in which the elevator will stay put
 
     public ElevatorByJoy()
     {

@@ -15,7 +15,7 @@ import frc.robot.RobotMap;
 import frc.robot.commands.ClawStop;
 
 /**
- * Add your docs here.
+ * Claw subsystem
  */
 public class Claw extends Subsystem
 {
@@ -23,7 +23,7 @@ public class Claw extends Subsystem
     // here. Call these from Commands.
     private TalonSRX _clawMotor = new TalonSRX(RobotMap.Motors.Claw.MOTOR);
     /**
-     * Powers the gripper with supplied input
+     * Powers the claw with supplied input
      * 
      * @param power percentage of power to supply to the motors. If invalid,
      *              rounded.
@@ -40,6 +40,7 @@ public class Claw extends Subsystem
         this._clawMotor.set(ControlMode.PercentOutput, power);
     }
 
+    // Sets default command
     @Override
     public void initDefaultCommand()
     {

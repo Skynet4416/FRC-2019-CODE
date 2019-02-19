@@ -36,7 +36,7 @@ public class Roller extends Subsystem
             power = 1;
             System.out.println("Roller: rounded down power over 1");
         }
-        if (power < -1)
+        else if (power < -1)
         {// rounds up power under the minimum
             power = -1;
             System.out.println("Roller: rounded up power under -1");
@@ -46,6 +46,7 @@ public class Roller extends Subsystem
         this._leftMotor.set(-power);
     }
 
+    // Sets default command
     @Override
     public void initDefaultCommand()
     {
