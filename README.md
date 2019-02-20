@@ -4,16 +4,15 @@ All code for Skynet's 2019 robot.
 ### Vision
 - [x] Activating BrightPI
 - [x] Finding Vision Targets
-- [ ] Motion Profile Integration 
-- [ ] Update Driver HUD Code to Automatic Calibration
+- [x] Motion Profile Integration 
 ### Systems
 - [x] Chassis Code
 - [x] Elevator Code
 - [x] Claw Code
 - [x] Gripper Code
-- [ ] Driver Camera Feed
+- [x] Driver Camera Feed
 - [x] OI and RobotMap
 - [x] Climbing Code
-- [ ] Jack Servo Code  
+- [x] Jack Servo Code  
 ### Motion Profiling
 - [ ] Integrate with Vision and Systems

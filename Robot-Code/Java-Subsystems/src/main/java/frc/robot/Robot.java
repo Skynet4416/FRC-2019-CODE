@@ -8,6 +8,7 @@
 package frc.robot;
 
 import frc.robot.subsystems.*;
+import edu.wpi.first.cameraserver.*;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
@@ -27,6 +28,7 @@ public class Robot extends TimedRobot
     public static Elevator elevator;
     public static Claw claw;
     public static Climber climber;
+    public static Jack jack;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -41,6 +43,8 @@ public class Robot extends TimedRobot
         elevator = new Elevator();
         claw = new Claw();
         climber = new Climber();
+        jack = new Jack();
+        CameraServer.getInstance().startAutomaticCapture().setResolution(640, 480);
     }
 
     /**
