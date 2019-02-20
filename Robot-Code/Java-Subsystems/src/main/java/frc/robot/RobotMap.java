@@ -60,6 +60,12 @@ public class RobotMap
             public static final int FORWARD_SOLENOID = 0;
             public static final int REVERSE_SOLENOID = 0;
         }
+
+        public class Jack
+        {
+            public static final int LEFT_SERVO = 0;
+            public static final int RIGHT_SERVO = 0;
+        }
     }
 
     /**
@@ -93,6 +99,11 @@ public class RobotMap
         public class Climber
         {
             public static final int PNEU_TGL_BTN = 0;
+        }
+
+        public class Jack
+        {
+            public static final int TGL_JACK = 0;
         }
     }
 }
