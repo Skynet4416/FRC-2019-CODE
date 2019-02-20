@@ -8,7 +8,6 @@ point_num = 100         # the number of points generated along the path
 
 
 def motion_profiler(x, y, angle):
-
     # heuristically calculated weights in the path
     w1 = y
     w2 = math.sqrt(x ** 2 + y ** 2)

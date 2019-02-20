@@ -36,13 +36,15 @@ def init_and_wait():
 
 def get_bool(key: str, default: bool) -> bool:
     if VISION_TABLE is None:
-        raise Exception("vision_table Wasn't initialized, please use init")
+        print("vision_table wasn't initialized, please use init")
+        return
     return VISION_TABLE.getBoolean(key, default)
 
 
 def set_bool(key: str, value: bool):
     if VISION_TABLE is None:
-        raise Exception("vision_table Wasn't initialized, please use init")
+        print("vision_table wasn't initialized, please use init")
+        return
     VISION_TABLE.putBoolean(key, value)
 
 
@@ -61,7 +63,7 @@ def wait_for_profile_request():
     """Wait for a motion profile request from the main robot"""
     # I know that this is ugly, but I cba to add a decorator
     if VISION_TABLE is None:
-        raise Exception("vision_table Wasn't initialized, please use init")
+        raise Exception("vision_table wasn't initialized, please use init")
 
     global profile_listener_cond_var
     global profile_listener_state
