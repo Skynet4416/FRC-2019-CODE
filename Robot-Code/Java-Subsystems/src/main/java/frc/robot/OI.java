@@ -39,7 +39,10 @@ public class OI
     // Claw buttons
     private Button _openBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Claw.OPEN_BTN);
     private Button _closeBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Claw.CLOSE_BTN);
+    // Toggle climbing
     private Button _climbingTgl = new JoystickButton(_elevatorJoy, RobotMap.Controls.Climber.PNEU_TGL_BTN);
+    // Toggle jack
+    private Button _openJack = new JoystickButton(_elevatorJoy, RobotMap.Controls.Jack.TGL_JACK);
 
     public OI()
     {
@@ -50,6 +53,7 @@ public class OI
         this._closeBtn.whenPressed(new ClawClose());
         this._closeBtn.whenReleased(new ClawStop());
         this._climbingTgl.whenPressed(new ClimberToggle());
+        this._openJack.whenPressed(new JackToggle());
     }
 
     public double getLeft()
