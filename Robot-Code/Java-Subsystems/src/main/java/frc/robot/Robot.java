@@ -8,6 +8,7 @@
 package frc.robot;
 
 import frc.robot.subsystems.*;
+import edu.wpi.first.cameraserver.*;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
@@ -41,6 +42,7 @@ public class Robot extends TimedRobot
         elevator = new Elevator();
         claw = new Claw();
         climber = new Climber();
+        CameraServer.getInstance().startAutomaticCapture().setResolution(640, 480);
     }
 
     /**
