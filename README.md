@@ -15,4 +15,6 @@ All code for Skynet's 2019 robot.
 - [x] Climbing Code
 - [x] Jack Servo Code  
 ### Motion Profiling
-- [ ] Integrate with Vision and Systems
+- [x] Generate Path (Neural Network/Mathematically)
+- [x] Create Trajectory From Path
+- [x] Integrate With Vision and Systems
