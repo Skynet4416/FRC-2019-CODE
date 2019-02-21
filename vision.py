@@ -113,6 +113,7 @@ def get_contours(image):
 
 
 def main():
+	global g_frame_pred
 	last_sec = time()
 	frames_since = 0
 	curr_fps = 0
@@ -124,6 +125,8 @@ def main():
 		with g_frame_cond:
 			if not g_frame_pred:
 				g_frame_cond.wait()
+			
+			g_frame_pred = False
 
 		image = g_frame.array		# convert to cv2 handleable format
 		#cv2.imshow("Raw", image)
@@ -191,7 +194,7 @@ def main():
 				info = "dist={:.2f} angle={:.2f} fps={}" \
 				.format(dist, math.degrees(angle), curr_fps)
 				
-				cv2.putText(image, info, (0, RESOLUTION[1] - 15),
+				cv2.putText(image, info, (0, RESOLUTION[1] - 20),
 					cv2.FONT_HERSHEY_SIMPLEX, 0.75, (255, 255, 255), 2)
 		else:
 			x_queue = []
