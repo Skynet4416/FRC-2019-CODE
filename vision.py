@@ -65,6 +65,23 @@ camera.iso = 270
 camera.rotation = 270
 camera.shutter_speed = 750
 
+def get_contours_from_image(image):
+	"""
+	@param image: A regular bgr image
+	"""
+	
+	hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)	# frame to hsv
+	mask = cv2.inRange(hsv, np.array(LOW), np.array(HIGH))
+	ker = cv2.getStructuringElement(cv2.MORPH_OPEN, (KER_SIZE, KER_SIZE))
+	# mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, ker, iterations = ITERATIONS)
+	filtered = cv2.bitwise_and(image, image, mask=mask)
+	#cv2.imshow("Filtered", filtered)	# display  filtered frame
+	_, contours, __ = cv2.findContours(mask, cv2.RETR_TREE,
+					cv2.CHAIN_APPROX_SIMPLE)
+
+	return contours
+
+
 def main():
 	x_queue = []
 	y_queue = []
@@ -74,16 +91,9 @@ def main():
 						use_video_port=True):
 		image = frame.array		# convert to cv2 handleable format
 		#cv2.imshow("Raw", image)
-
 		pts = []
-		hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)	# frame to hsv
-		mask = cv2.inRange(hsv, np.array(LOW), np.array(HIGH))
-		ker = cv2.getStructuringElement(cv2.MORPH_OPEN, (KER_SIZE, KER_SIZE))
-		# mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, ker, iterations = ITERATIONS)
-		filtered = cv2.bitwise_and(image, image, mask=mask)
-		#cv2.imshow("Filtered", filtered)	# display  filtered frame
-		_, contours, __ = cv2.findContours(mask, cv2.RETR_TREE,
-						cv2.CHAIN_APPROX_SIMPLE)
+		contours = get_contours_from_image(image)
+	
 		for contour in contours:
 			cnt_area = cv2.contourArea(contour)
 			if cnt_area < MIN_AREA:
@@ -140,6 +150,7 @@ def main():
 		else:
 			x_queue = []
 			y_queue = []
+
 		cv2.imshow("contours", image)
 		key = cv2.waitKey(1) & 0xFF	# if exit key is pressed
 		rawCapture.truncate(0)		# clear stream for next image
