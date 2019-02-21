@@ -94,8 +94,5 @@ def send_motion_profiles(leftProfile, rightProfile):
     set_bool(VISION_START_KEY, False)
 
 
-def main():
-    pass
-
 if __name__ == "__main__":
-    main()
+    print("This is a library, so you can't run it as main.")
