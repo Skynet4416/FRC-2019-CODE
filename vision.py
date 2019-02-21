@@ -133,6 +133,7 @@ def main():
 		contours = get_contours(image)
 		left_oriented = []
 		right_oriented = []
+		markers = []
 		for contour in contours:
 			cnt_area = cv2.contourArea(contour)
 			if cnt_area < MIN_AREA:
@@ -153,38 +154,32 @@ def main():
 				continue
 			
 			bounding = cv2.boundingRect(contour)
+			# saves all markers to list with orientation
 			if abs(rect[-1]) > 45:
-				right_oriented.append((bounding, [box]))
+				markers.append((bounding, [box], "R"))
 			else:
-				left_oriented.append((bounding, [box]))
+				markers.append((bounding, [box], "L"))
+			
+		markers.sort(key=lambda tup: tup[0][0])
 		right_rect, left_rect = None, None
 		right_box, left_box = None, None
-		if len(right_oriented) == 1:
-			right_rect = right_oriented[0][0]
-			right_box = right_oriented[0][1]
-			right_x = right_rect[0]  # x coords of the bounding rect
-			for bounding, box in left_oriented:
-				if bounding[0] > right_x:
-					left_rect = bounding
-					left_box = box
-					break
-		elif len(left_oriented) == 1:
-			left_rect = left_oriented[0][0]
-			left_box = left_oriented[0][1]
-			left_x = left_rect[0]  # x coords of the bounding rect
-			for bounding, box in right_oriented:
-				if bounding[0] < left_x:
-					right_rect = bounding
-					right_box = box
-					break
+		if len(markers) >= 2:
+			# removes edges
+			if markers[0][-1] == "L":
+				markers.pop(0)
+			if markers[-1][-1] == "R":
+				markers.pop(-1)
+			if len(markers) >= 2:
+				right_rect, right_box, _ = markers[0]
+				left_rect, left_box, _ = markers[1]
+			
 		if right_rect and left_rect:
-			print(len(left_oriented), len(right_oriented))
-			# --cnt_x, cnt_y, cnt_w, cnt_h = cv2.boundingRect(contour)
 			cv2.drawContours(image, left_box, 0, (0,0,255), 2)
 			cv2.drawContours(image, right_box, 0, (0,0,255), 2)
-			# print("Contour ratio: {}".format(distances[1]/distances[0]))
-			y = T_HEIGHT * RESOLUTION[1] / (2 * math.tan(V_VIEW_ANGLE) * left_rect[-1])
-			x = T_HEIGHT * RESOLUTION[1] / (2 * math.tan(V_VIEW_ANGLE) * right_rect[-1])
+			y = T_HEIGHT * RESOLUTION[1] / (2 * math.tan(V_VIEW_ANGLE) * 
+											left_rect[-1])
+			x = T_HEIGHT * RESOLUTION[1] / (2 * math.tan(V_VIEW_ANGLE) *
+											right_rect[-1])
 			cv2.putText(image, str(round(y, 2)), (left_rect[0], left_rect[1]),
 						cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 			cv2.putText(image, str(round(x, 2)), (right_rect[0], right_rect[1]),
