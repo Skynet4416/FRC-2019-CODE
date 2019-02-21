@@ -9,10 +9,10 @@ import network_table_profile_api as ntapi
 from time import time
 from threading import Thread, Condition
 
-
 g_frame = None
 g_frame_cond = Condition()
 g_frame_pred = False
+g_running = True
 
 # exit key
 EXIT_KEY = ord("q")
@@ -33,7 +33,6 @@ TARGET_DIST = 0.20
 V_MARKER_RATIO = 2.75 # Ratio between the marker height and marker width.
 # final calculation
 QUEUE_SIZE = 20	
-g_running = True
 
 def acquire_frames():
 	global g_frame_pred
@@ -53,16 +52,17 @@ def acquire_frames():
 		
 		if not g_running:
 			break
-			
-	
+
 
 def toggle_light(state: bool):
 	with SMBusWrapper(1) as bus:
 		msg = i2c_msg.write(0x70, [0x00, 0xFF if state else 0x00])  # ternary for if statement
 		bus.i2c_rdwr(msg)
 
+
 def pt_distance(a, b):
 	return np.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
+
 
 def target_details(x, y, dist):
 	is_reversed = False
@@ -85,6 +85,7 @@ def target_details(x, y, dist):
 		return ((math.pi / 2) + alpha, -target_x, target_y)
 	
 	return ((math.pi / 2) - alpha, target_x, target_y)
+
 
 # toggle_light(True)
 camera = PiCamera()
@@ -202,8 +203,7 @@ def main():
 		if key == EXIT_KEY:  # exit
 			raise KeyboardInterrupt
 	# toggle_light(False)
-		
-	
+
 
 if __name__ == "__main__":
 	thread = Thread(target=acquire_frames)
@@ -218,5 +218,4 @@ if __name__ == "__main__":
 		except Exception as e: # o byle please forgive me
 			print("died with {}\nrestarting..." .format(e))
 	
-	print("done")
 	g_running = False
