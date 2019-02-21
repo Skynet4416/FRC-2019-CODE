@@ -90,8 +90,8 @@ def motion_profiler(x, y, angle):
         r_dist = np.sqrt((r_wheel_x[i] - r_wheel_x[i - 1]) ** 2 +
                          (r_wheel_y[i] - r_wheel_y[i - 1]) ** 2)
         # calculates left and right times (should be identical)
-        r_time[i] = r_time[i - 1] + 2 * r_dist / (r_vel[i] + r_vel[i - 1])
-        l_time[i] = l_time[i - 1] + 2 * l_dist / (l_vel[i] + l_vel[i - 1])
+        r_time[i] = 2 * r_dist / (r_vel[i] + r_vel[i - 1])
+        l_time[i] = 2 * l_dist / (l_vel[i] + l_vel[i - 1])
         # calculates total distance traveled per side
         l_loc[i] = l_loc[i - 1] + l_dist
         r_loc[i] = r_loc[i - 1] + r_dist
