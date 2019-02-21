@@ -61,7 +61,6 @@ def profile_request_listener(table, key, value, isNew):
 
 def wait_for_profile_request():
     """Wait for a motion profile request from the main robot"""
-    # I know that this is ugly, but I cba to add a decorator
     if VISION_TABLE is None:
         raise Exception("vision_table wasn't initialized, please use init")
 
@@ -82,6 +81,9 @@ def wait_for_profile_request():
 def send_motion_profiles(leftProfile, rightProfile):
     """Sends the motion profiles to the network table and turns off the required flag
     :param leftProfile, rightProfile: motion profiling profiles. Arrays sized 100x3"""
+    if VISION_TABLE is None:
+        raise Exception("vision_table wasn't initialized, please use init")
+    
     leftEntries = [NetworkTables.getEntry(key) for key in LEFT_PROFILE_KEYS]
     rightEntries = [NetworkTables.getEntry(key) for key in RIGHT_PROFILE_KEYS]
 
