@@ -6,6 +6,12 @@ from picamera import PiCamera
 import math
 import mp_planner
 import network_table_profile_api as ntapi
+from time import time
+from threading import Thread, Lock
+
+
+g_frame = None
+g_frame_lock = Lock()
 
 # exit key
 EXIT_KEY = ord("q")
@@ -25,7 +31,7 @@ V_VIEW_ANGLE = math.radians(7.89) # vertical
 TARGET_DIST = 0.20
 V_MARKER_RATIO = 2.75 # Ratio between the marker height and marker width.
 # final calculation
-QUEUE_SIZE = 20
+QUEUE_SIZE = 20	
 
 def toggle_light(state: bool):
 	with SMBusWrapper(1) as bus:
@@ -65,7 +71,7 @@ camera.iso = 270
 camera.rotation = 270
 camera.shutter_speed = 750
 
-def get_contours_from_image(image):
+def get_contours(image):
 	"""
 	@param image: A regular bgr image
 	"""
@@ -83,6 +89,10 @@ def get_contours_from_image(image):
 
 
 def main():
+	last_sec = time()
+	frames_since = 0
+	curr_fps = 0
+	
 	x_queue = []
 	y_queue = []
 
@@ -92,7 +102,7 @@ def main():
 		image = frame.array		# convert to cv2 handleable format
 		#cv2.imshow("Raw", image)
 		pts = []
-		contours = get_contours_from_image(image)
+		contours = get_contours(image)
 	
 		for contour in contours:
 			cnt_area = cv2.contourArea(contour)
@@ -119,7 +129,14 @@ def main():
 			cv2.putText(image, str(round(cnt_dist, 2)), (cnt_x, cnt_y),
 				cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
 			pts.append((cnt_x, cnt_dist))
+		
 		if len(pts) == 2:
+			g_frames_since += 1
+			if int(time()) != last_sec:
+				curr_fps = frames_since
+				frames_since = 0
+				last_sec = int(time())
+			
 			if pts[0][0] > pts[1][0]:
 				y = pts[0][1]
 				x = pts[1][1]
@@ -128,6 +145,7 @@ def main():
 				y = pts[1][1]
 			x_queue.append(x)
 			y_queue.append(y)
+			
 			if len(x_queue) == QUEUE_SIZE + 1:
 				x_queue.pop(0)
 				y_queue.pop(0)
@@ -137,27 +155,30 @@ def main():
 				dist = math.sqrt((x_avg**2 + y_avg**2 - 0.02)/2)
 				angle, target_x, target_y = target_details(x_avg, y_avg,
 														   dist)
+				
 				if ntapi.get_bool(ntapi.VISION_START_KEY, False):
 					
 					left_prof, right_prof = mp_planner.motion_profiler(target_x,
 																target_y, angle)
 					ntapi.send_motion_profiles(left_prof, right_prof)
-
-				info = "dist=%f angle=%f" %(round(dist, 2),
-							round(math.degrees(angle), 2))
-				cv2.putText(image, info, (0, RESOLUTION[1]),
-					cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+				
+				info = "dist={:.2f} angle={:.2f} fps={}" \
+				.format(dist, math.degrees(angle), curr_fps)
+				
+				cv2.putText(image, info, (0, RESOLUTION[1] - 20),
+					cv2.FONT_HERSHEY_SIMPLEX, 0.75, (255, 255, 255), 2)
 		else:
 			x_queue = []
 			y_queue = []
 
 		cv2.imshow("contours", image)
-		key = cv2.waitKey(1) & 0xFF	# if exit key is pressed
-		rawCapture.truncate(0)		# clear stream for next image
-		if key == EXIT_KEY:		# exit
+		key = cv2.waitKey(1) & 0xFF  # if exit key is pressed
+		rawCapture.truncate(0)  # clear stream for next image
+		if key == EXIT_KEY:  # exit
 			exit()
 	# toggle_light(False)
 	
+
 if __name__ == "__main__":
 	# ntapi.init_and_wait()
 	while True:
@@ -165,6 +186,5 @@ if __name__ == "__main__":
 			main()
 		except KeyboardInterrupt:
 			break
-		except Exception as e: # o pep 8 gods please excuse me for this ugliness
+		except Exception as e: # o byle please forgive me
 			print("died with {}\nrestarting..." .format(e))
-
