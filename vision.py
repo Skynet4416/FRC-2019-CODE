@@ -130,14 +130,16 @@ def main():
 
 		image = g_frame.array		# convert to cv2 handleable format
 		#cv2.imshow("Raw", image)
-		pts = []
 		contours = get_contours(image)
-	
+		left_oriented = []
+		right_oriented = []
 		for contour in contours:
 			cnt_area = cv2.contourArea(contour)
 			if cnt_area < MIN_AREA:
 				continue
+			# Rect is [pointA, pointB, angle]
 			rect = cv2.minAreaRect(contour)
+
 			box = np.int0(cv2.boxPoints(rect))
 			distances = [pt_distance(box[0], box[1]),
 				pt_distance(box[0], box[2]), pt_distance(box[0], box[3])]
@@ -150,28 +152,50 @@ def main():
 			if abs((distances[1]/distances[0])-V_MARKER_RATIO) > ERROR * 3:
 				continue
 			
-			cnt_x, cnt_y, cnt_w, cnt_h = cv2.boundingRect(contour)
-			cv2.drawContours(image, [box], 0, (0,0,255), 2)
-
-			#print("Contour ratio: {}".format(distances[1]/distances[0]))
-			cnt_dist = T_HEIGHT * RESOLUTION[1] / (2 * math.tan(V_VIEW_ANGLE) * cnt_h)
-			cv2.putText(image, str(round(cnt_dist, 2)), (cnt_x, cnt_y),
-				cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-			pts.append((cnt_x, cnt_dist))
-		
-		if len(pts) == 2:
+			bounding = cv2.boundingRect(contour)
+			if abs(rect[-1]) > 45:
+				right_oriented.append((bounding, [box]))
+			else:
+				left_oriented.append((bounding, [box]))
+		right_rect, left_rect = None, None
+		right_box, left_box = None, None
+		if len(right_oriented) == 1:
+			right_rect = right_oriented[0][0]
+			right_box = right_oriented[0][1]
+			right_x = right_rect[0]  # x coords of the bounding rect
+			for bounding, box in left_oriented:
+				if bounding[0] > right_x:
+					left_rect = bounding
+					left_box = box
+					break
+		elif len(left_oriented) == 1:
+			left_rect = left_oriented[0][0]
+			left_box = left_oriented[0][1]
+			left_x = left_rect[0]  # x coords of the bounding rect
+			for bounding, box in right_oriented:
+				if bounding[0] < left_x:
+					right_rect = bounding
+					right_box = box
+					break
+		if right_rect and left_rect:
+			print(len(left_oriented), len(right_oriented))
+			# --cnt_x, cnt_y, cnt_w, cnt_h = cv2.boundingRect(contour)
+			cv2.drawContours(image, left_box, 0, (0,0,255), 2)
+			cv2.drawContours(image, right_box, 0, (0,0,255), 2)
+			# print("Contour ratio: {}".format(distances[1]/distances[0]))
+			y = T_HEIGHT * RESOLUTION[1] / (2 * math.tan(V_VIEW_ANGLE) * left_rect[-1])
+			x = T_HEIGHT * RESOLUTION[1] / (2 * math.tan(V_VIEW_ANGLE) * right_rect[-1])
+			cv2.putText(image, str(round(y, 2)), (left_rect[0], left_rect[1]),
+						cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+			cv2.putText(image, str(round(x, 2)), (right_rect[0], right_rect[1]),
+						cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+			
 			frames_since += 1
 			if int(time()) != last_sec:
 				curr_fps = frames_since
 				frames_since = 0
 				last_sec = int(time())
-			
-			if pts[0][0] > pts[1][0]:
-				y = pts[0][1]
-				x = pts[1][1]
-			else:
-				x = pts[0][1]
-				y = pts[1][1]
+
 			x_queue.append(x)
 			y_queue.append(y)
 			
