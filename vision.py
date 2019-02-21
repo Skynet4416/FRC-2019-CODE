@@ -27,15 +27,9 @@ V_MARKER_RATIO = 2.75 # Ratio between the marker height and marker width.
 # final calculation
 QUEUE_SIZE = 20
 
-
-def light_on():
+def toggle_light(state: bool):
 	with SMBusWrapper(1) as bus:
-		msg = i2c_msg.write(0x70, [0x00, 0xFF])	# turn on i2c msg
-		bus.i2c_rdwr(msg)
-
-def light_off():
-	with SMBusWrapper(1) as bus:
-		msg = i2c_msg.write(0x70, [0x00, 0x00])	# turn off i2c msg
+		msg = i2c_msg.write(0x70, [0x00, 0xFF if state else 0x00])  # ternary for if statement
 		bus.i2c_rdwr(msg)
 
 def pt_distance(a, b):
@@ -63,7 +57,7 @@ def target_details(x, y, dist):
 	
 	return ((math.pi / 2) - alpha, target_x, target_y)
 
-# light_on()
+# toggle_light(True)
 camera = PiCamera()
 camera.resolution = RESOLUTION
 camera.framerate = 90
@@ -80,7 +74,6 @@ def main():
 						use_video_port=True):
 		image = frame.array		# convert to cv2 handleable format
 		#cv2.imshow("Raw", image)
-		height, width, _ = image.shape
 
 		pts = []
 		hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)	# frame to hsv
@@ -152,7 +145,7 @@ def main():
 		rawCapture.truncate(0)		# clear stream for next image
 		if key == EXIT_KEY:		# exit
 			exit()
-	# light_off()
+	# toggle_light(False)
 	
 if __name__ == "__main__":
 	# ntapi.init_and_wait()
@@ -162,5 +155,5 @@ if __name__ == "__main__":
 		except KeyboardInterrupt:
 			break
 		except Exception as e: # o pep 8 gods please excuse me for this ugliness
-			print("died with {}" .format(e))
+			print("died with {}\nrestarting..." .format(e))
 
