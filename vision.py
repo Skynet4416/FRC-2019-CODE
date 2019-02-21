@@ -7,11 +7,12 @@ import math
 import mp_planner
 import network_table_profile_api as ntapi
 from time import time
-from threading import Thread, Lock
+from threading import Thread, Condition
 
 
 g_frame = None
-g_frame_lock = Lock()
+g_frame_cond = Condition()
+g_frame_pred = False
 
 # exit key
 EXIT_KEY = ord("q")
@@ -32,6 +33,28 @@ TARGET_DIST = 0.20
 V_MARKER_RATIO = 2.75 # Ratio between the marker height and marker width.
 # final calculation
 QUEUE_SIZE = 20	
+g_running = True
+
+def acquire_frames():
+	global g_frame_pred
+	global g_frame
+	
+	raw_capture = PiRGBArray(camera, size=RESOLUTION)
+
+	for frame in camera.capture_continuous(raw_capture, format="bgr",
+					use_video_port=True):
+		g_frame = frame
+	
+		with g_frame_cond:
+			g_frame_pred = True
+			g_frame_cond.notify()
+			
+		raw_capture.truncate(0)  # clear stream for next image
+		
+		if not g_running:
+			break
+			
+	
 
 def toggle_light(state: bool):
 	with SMBusWrapper(1) as bus:
@@ -95,11 +118,13 @@ def main():
 	
 	x_queue = []
 	y_queue = []
+	
+	while True:
+		with g_frame_cond:
+			if not g_frame_pred:
+				g_frame_cond.wait()
 
-	rawCapture = PiRGBArray(camera, size=RESOLUTION)
-	for frame in camera.capture_continuous(rawCapture, format="bgr",
-						use_video_port=True):
-		image = frame.array		# convert to cv2 handleable format
+		image = g_frame.array		# convert to cv2 handleable format
 		#cv2.imshow("Raw", image)
 		pts = []
 		contours = get_contours(image)
@@ -127,11 +152,11 @@ def main():
 			#print("Contour ratio: {}".format(distances[1]/distances[0]))
 			cnt_dist = T_HEIGHT * RESOLUTION[1] / (2 * math.tan(V_VIEW_ANGLE) * cnt_h)
 			cv2.putText(image, str(round(cnt_dist, 2)), (cnt_x, cnt_y),
-				cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+				cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 			pts.append((cnt_x, cnt_dist))
 		
 		if len(pts) == 2:
-			g_frames_since += 1
+			frames_since += 1
 			if int(time()) != last_sec:
 				curr_fps = frames_since
 				frames_since = 0
@@ -165,7 +190,7 @@ def main():
 				info = "dist={:.2f} angle={:.2f} fps={}" \
 				.format(dist, math.degrees(angle), curr_fps)
 				
-				cv2.putText(image, info, (0, RESOLUTION[1] - 20),
+				cv2.putText(image, info, (0, RESOLUTION[1] - 15),
 					cv2.FONT_HERSHEY_SIMPLEX, 0.75, (255, 255, 255), 2)
 		else:
 			x_queue = []
@@ -173,13 +198,17 @@ def main():
 
 		cv2.imshow("contours", image)
 		key = cv2.waitKey(1) & 0xFF  # if exit key is pressed
-		rawCapture.truncate(0)  # clear stream for next image
+
 		if key == EXIT_KEY:  # exit
-			exit()
+			raise KeyboardInterrupt
 	# toggle_light(False)
+		
 	
 
 if __name__ == "__main__":
+	thread = Thread(target=acquire_frames)
+	thread.start()
+	
 	# ntapi.init_and_wait()
 	while True:
 		try:
@@ -188,3 +217,6 @@ if __name__ == "__main__":
 			break
 		except Exception as e: # o byle please forgive me
 			print("died with {}\nrestarting..." .format(e))
+	
+	print("done")
+	g_running = False
