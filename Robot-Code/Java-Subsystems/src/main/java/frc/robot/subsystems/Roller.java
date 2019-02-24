@@ -27,9 +27,10 @@ public class Roller extends Subsystem
     
     public Roller()
     {
-        _leftMotor.setInverted(true);
-        _leftMotor.set(ControlMode.Follower, RobotMap.Motors.Roller.RIGHT);
+        this._leftMotor.setInverted(true);
+        this._leftMotor.set(ControlMode.Follower, RobotMap.Motors.Roller.RIGHT);
     }
+    
     /**
      * Powers the gripper with supplied input
      * 
