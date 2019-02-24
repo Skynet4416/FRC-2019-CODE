@@ -7,8 +7,9 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Talon;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.RollerStop;
@@ -20,9 +21,15 @@ public class Roller extends Subsystem
 {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    private SpeedController _rightMotor = new Talon(RobotMap.Motors.Roller.RIGHT);
-    private SpeedController _leftMotor = new Talon(RobotMap.Motors.Roller.LEFT);
+    private VictorSPX _rightMotor = new VictorSPX(RobotMap.Motors.Roller.RIGHT);
+    private VictorSPX _leftMotor = new VictorSPX(RobotMap.Motors.Roller.LEFT);
 
+    
+    public Roller()
+    {
+        _leftMotor.setInverted(true);
+        _leftMotor.set(ControlMode.Follower, RobotMap.Motors.Roller.RIGHT);
+    }
     /**
      * Powers the gripper with supplied input
      * 
@@ -42,8 +49,7 @@ public class Roller extends Subsystem
             System.out.println("Roller: rounded up power under -1");
         }
         // one of the motors needs to rotate opposite the other to make the gripper work
-        this._rightMotor.set(power);
-        this._leftMotor.set(-power);
+        this._rightMotor.set(ControlMode.PercentOutput, power);
     }
 
     // Sets default command
