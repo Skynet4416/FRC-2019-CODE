@@ -31,40 +31,42 @@ public class RobotMap
     {
         public class Chassis
         {
-            public static final int MASTER_LEFT = 0;
-            public static final int MASTER_RIGHT = 0;
-            public static final int SLAVE_LEFT = 0;
-            public static final int SLAVE_RIGHT = 0;
+            public static final int MASTER_LEFT = 6;
+            public static final int MASTER_RIGHT = 1;
+            public static final int SLAVE_LEFT = 3;
+            public static final int SLAVE_RIGHT = 2;
         }
 
         public class Claw
         {
-            public static final int MOTOR = 0;
+            public static final int MOTOR = 9;
         }
 
         public class Roller
         {
-            public static final int LEFT = 0;
-            public static final int RIGHT = 0;
+            public static final int LEFT = 7;
+            public static final int RIGHT = 8;
         }
 
         public class Elevator
         {
-            public static final int MOTOR1 = 0;
-            public static final int MOTOR2 = 0;
+            public static final int MOTOR1 = 4;
+            public static final int MOTOR2 = 5;
         }
 
         public class Climber
         {
             public static final int COMPRESSOR = 0;
-            public static final int FORWARD_SOLENOID = 0;
-            public static final int REVERSE_SOLENOID = 0;
+            public static final int FORWARD_SOLENOID1 = 0;
+            public static final int REVERSE_SOLENOID1 = 0;
+            public static final int FORWARD_SOLENOID2 = 0;
+            public static final int REVERSE_SOLENOID2 = 0;
         }
 
         public class Jack
         {
             public static final int LEFT_SERVO = 0;
-            public static final int RIGHT_SERVO = 0;
+            public static final int RIGHT_SERVO = 1;
         }
     }
 
@@ -76,34 +78,34 @@ public class RobotMap
         public class Chassis
         {
             public static final int LEFT_JOY = 0;
-            public static final int RIGHT_JOY = 0;
+            public static final int RIGHT_JOY = 2;
         }
 
         public class Claw
         {
-            public static final int OPEN_BTN = 0;
-            public static final int CLOSE_BTN = 0;
+            public static final int OPEN_BTN = 5;
+            public static final int CLOSE_BTN = 3;
         }
 
         public class Roller
         {
             public static final int PUSH_BTN = 0;
-            public static final int PULL_BTN = 0;
+            public static final int PULL_BTN = 1;
         }
 
         public class Elevator
         {
-            public static final int ELEVATOR_JOY = 0;
+            public static final int ELEVATOR_JOY = 1;
         }
 
         public class Climber
         {
-            public static final int PNEU_TGL_BTN = 0;
+            public static final int PNEU_TGL_BTN = 6;
         }
 
         public class Jack
         {
-            public static final int TGL_JACK = 0;
+            public static final int TGL_JACK = 4;
         }
     }
 }
