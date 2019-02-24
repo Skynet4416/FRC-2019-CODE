@@ -7,43 +7,37 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Talon;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.RollerStop;
+import frc.robot.commands.ClawStop;
 
 /**
- * Add your docs here.
+ * Claw subsystem
  */
-public class Roller extends Subsystem
+public class Claw extends Subsystem
 {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    private SpeedController _rightMotor = new Talon(RobotMap.Motors.Roller.RIGHT);
-    private SpeedController _leftMotor = new Talon(RobotMap.Motors.Roller.LEFT);
-
+    private TalonSRX _clawMotor = new TalonSRX(RobotMap.Motors.Claw.MOTOR);
     /**
-     * Powers the gripper with supplied input
+     * Powers the claw with supplied input
      * 
      * @param power percentage of power to supply to the motors. If invalid,
      *              rounded.
      */
     public void set(double power)
     {
-        if (power > 1)
-        {// rounds down power over the maximum
-            power = 1;
-            System.out.println("Roller: rounded down power over 1");
+        if (Math.abs(power) > 1)
+        {
+            // Makes it either 1 or -1 (basically copysign of power to 1)
+            power /= Math.abs(power);
+            // Still an unepic print message
+            System.out.println("Claw: Power input is out of range: Rounding power to: " + power);
         }
-        else if (power < -1)
-        {// rounds up power under the minimum
-            power = -1;
-            System.out.println("Roller: rounded up power under -1");
-        }
-        // one of the motors needs to rotate opposite the other to make the gripper work
-        this._rightMotor.set(power);
-        this._leftMotor.set(-power);
+        this._clawMotor.set(ControlMode.PercentOutput, power);
     }
 
     // Sets default command
@@ -51,6 +45,6 @@ public class Roller extends Subsystem
     public void initDefaultCommand()
     {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new RollerStop());
+        setDefaultCommand(new ClawStop());
     }
 }

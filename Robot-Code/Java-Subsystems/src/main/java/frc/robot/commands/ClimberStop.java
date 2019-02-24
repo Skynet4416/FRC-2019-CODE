@@ -9,31 +9,33 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Climber;
 
-public class DriveByJoy extends Command
+public class ClimberStop extends Command
 {
-    private Chassis _chassis;
+    private Climber _climber;
 
-    public DriveByJoy()
+    public ClimberStop()
     {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.chassis);
-        this._chassis = Robot.chassis;
+        requires(Robot.roller);
+        this._climber = Robot.climber;
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize()
     {
-
+        this._climber.stopSolenoid();
+        
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute()
     {
-        this._chassis.set(Robot.oi.getLeft(), Robot.oi.getRight());
+        // If can test limit with compressor or something
+        // Check will be here
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -47,7 +49,7 @@ public class DriveByJoy extends Command
     @Override
     protected void end()
     {
-
+        
     }
 
     // Called when another command which requires one or more of the same
@@ -55,6 +57,6 @@ public class DriveByJoy extends Command
     @Override
     protected void interrupted()
     {
-        this._chassis.set(0, 0);
+        // stopped by interupter
     }
 }

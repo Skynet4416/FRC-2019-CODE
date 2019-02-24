@@ -9,17 +9,18 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.*;
 
-public class DriveByJoy extends Command
+public class ElevatorByJoy extends Command 
 {
-    private Chassis _chassis;
+    private Elevator _elevator;
+    public static final double ZERO_VALUE = 0.2;  // Value in which the elevator will stay put
 
-    public DriveByJoy()
+    public ElevatorByJoy()
     {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.chassis);
-        this._chassis = Robot.chassis;
+        requires(Robot.elevator);
+        this._elevator = Robot.elevator;
     }
 
     // Called just before this Command runs the first time
@@ -33,7 +34,7 @@ public class DriveByJoy extends Command
     @Override
     protected void execute()
     {
-        this._chassis.set(Robot.oi.getLeft(), Robot.oi.getRight());
+        this._elevator.set(Robot.oi.getElevator() + ZERO_VALUE);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -52,9 +53,10 @@ public class DriveByJoy extends Command
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
+    //When interrupted - Elevator gets stuck
     @Override
     protected void interrupted()
     {
-        this._chassis.set(0, 0);
+        this._elevator.set(ZERO_VALUE);
     }
 }

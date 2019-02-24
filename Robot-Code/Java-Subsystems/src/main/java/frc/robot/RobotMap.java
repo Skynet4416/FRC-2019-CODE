@@ -15,65 +15,95 @@ package frc.robot;
  */
 public class RobotMap
 {
-  // For example to map the left and right motors, you could define the
-  // following variables to use with your drivetrain subsystem.
-  // public static int leftMotor = 1;
-  // public static int rightMotor = 2;
+    // For example to map the left and right motors, you could define the
+    // following variables to use with your drivetrain subsystem.
+    // public static int leftMotor = 1;
+    // public static int rightMotor = 2;
 
-  // If you are using multiple modules, make sure to define both the port
-  // number and the module. For example you with a rangefinder:
-  // public static int rangefinderPort = 1;
-  // public static int rangefinderModule = 1;
-  /**
-   * A class containing motor ports
-   */
-  public class Motors
-  {
-    public class Chassis
+    // If you are using multiple modules, make sure to define both the port
+    // number and the module. For example you with a rangefinder:
+    // public static int rangefinderPort = 1;
+    // public static int rangefinderModule = 1;
+    /**
+     * A class containing motor ports
+     */
+    public class Motors
     {
-      public static final int MASTER_LEFT = 0;
-      public static final int MASTER_RIGHT = 0;
-      public static final int SLAVE_LEFT = 0;
-      public static final int SLAVE_RIGHT = 0;
+        public class Chassis
+        {
+            public static final int MASTER_LEFT = 0;
+            public static final int MASTER_RIGHT = 0;
+            public static final int SLAVE_LEFT = 0;
+            public static final int SLAVE_RIGHT = 0;
+        }
+
+        public class Claw
+        {
+            public static final int MOTOR = 0;
+        }
+
+        public class Roller
+        {
+            public static final int LEFT = 0;
+            public static final int RIGHT = 0;
+        }
+
+        public class Elevator
+        {
+            public static final int MOTOR1 = 0;
+            public static final int MOTOR2 = 0;
+        }
+
+        public class Climber
+        {
+            public static final int COMPRESSOR = 0;
+            public static final int FORWARD_SOLENOID = 0;
+            public static final int REVERSE_SOLENOID = 0;
+        }
+
+        public class Jack
+        {
+            public static final int LEFT_SERVO = 0;
+            public static final int RIGHT_SERVO = 0;
+        }
     }
-    public class Claw
+
+    /**
+     * A class containing input device ports
+     */
+    public class Controls
     {
-      public static final int MOTOR = 0;
+        public class Chassis
+        {
+            public static final int LEFT_JOY = 0;
+            public static final int RIGHT_JOY = 0;
+        }
+
+        public class Claw
+        {
+            public static final int OPEN_BTN = 0;
+            public static final int CLOSE_BTN = 0;
+        }
+
+        public class Roller
+        {
+            public static final int PUSH_BTN = 0;
+            public static final int PULL_BTN = 0;
+        }
+
+        public class Elevator
+        {
+            public static final int ELEVATOR_JOY = 0;
+        }
+
+        public class Climber
+        {
+            public static final int PNEU_TGL_BTN = 0;
+        }
+
+        public class Jack
+        {
+            public static final int TGL_JACK = 0;
+        }
     }
-    public class Roller
-    {
-      public static final int LEFT = 0;
-      public static final int RIGHT = 0;
-    }
-    public class Elevator
-    {
-      public static final int MOTOR1 = 0;
-      public static final int MOTOR2 = 0;
-    }
-  }
-  /**
-   * A class containing input device ports
-   */
-  public class Controls
-  {
-    public class Chassis
-    {
-      public static final int LEFT_JOY = 0;
-      public static final int RIGHT_JOY = 0;
-    }
-    public class Claw
-    {
-      public static final int OPEN_BTN = 0;
-      public static final int CLOSE_BTN = 0;
-    }
-    public class Roller
-    {
-      public static final int PUSH_BTN = 0;
-      public static final int PULL_BTN = 0;
-    }
-    public class Elevator
-    {
-      public static final int ELEVATOR_JOY = 0;
-    }
-  }
 }

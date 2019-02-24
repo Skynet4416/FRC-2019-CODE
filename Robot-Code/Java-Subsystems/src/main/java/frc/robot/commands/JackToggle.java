@@ -9,31 +9,34 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.*;
 
-public class DriveByJoy extends Command
+/*
+ Jack toggler basically
+*/
+public class JackToggle extends Command 
 {
-    private Chassis _chassis;
+    private Jack _jack;
 
-    public DriveByJoy()
+    public JackToggle()
     {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.chassis);
-        this._chassis = Robot.chassis;
+        requires(Robot.jack);
+        this._jack = Robot.jack;
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize()
     {
-
+        this._jack.toggle();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute()
     {
-        this._chassis.set(Robot.oi.getLeft(), Robot.oi.getRight());
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -55,6 +58,6 @@ public class DriveByJoy extends Command
     @Override
     protected void interrupted()
     {
-        this._chassis.set(0, 0);
+        
     }
 }
