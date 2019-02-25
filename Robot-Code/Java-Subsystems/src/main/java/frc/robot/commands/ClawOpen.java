@@ -14,7 +14,7 @@ import frc.robot.subsystems.*;
 public class ClawOpen extends Command
 {
     private Claw _claw;
-    public static final double POWER = -1;
+    public static final double POWER = -0.2;
 
     public ClawOpen()
     {

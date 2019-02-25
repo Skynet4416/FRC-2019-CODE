@@ -34,6 +34,8 @@ public class Chassis extends Subsystem
         // sets the slaves to follow the masters
         this._rightSlave.set(ControlMode.Follower, this._rightMaster.getDeviceID());
         this._leftSlave.set(ControlMode.Follower, this._leftMaster.getDeviceID());
+        this._rightSlave.setInverted(true);
+        this._leftSlave.setInverted(true);
     }
 
     // Controls the chassis in tank drive

@@ -89,8 +89,8 @@ public class RobotMap
 
         public class Roller
         {
-            public static final int PUSH_BTN = 0;
-            public static final int PULL_BTN = 1;
+            public static final int PUSH_BTN = 1;
+            public static final int PULL_BTN = 2;
         }
 
         public class Elevator

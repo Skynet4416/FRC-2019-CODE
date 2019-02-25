@@ -40,19 +40,21 @@ public class OI
     private Button _openBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Claw.OPEN_BTN);
     private Button _closeBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Claw.CLOSE_BTN);
     // Toggle climbing
-    private Button _climbingTgl = new JoystickButton(_elevatorJoy, RobotMap.Controls.Climber.PNEU_TGL_BTN);
+    //private Button _climbingTgl = new JoystickButton(_elevatorJoy, RobotMap.Controls.Climber.PNEU_TGL_BTN);
     // Toggle jack
     private Button _openJack = new JoystickButton(_elevatorJoy, RobotMap.Controls.Jack.TGL_JACK);
 
     public OI()
     {
         this._pushBtn.whenPressed(new RollerPush());
+        this._pushBtn.whenReleased(new RollerStop());
         this._pullBtn.whenPressed(new RollerPull());
+        this._pullBtn.whenReleased(new RollerStop());
         this._openBtn.whenPressed(new ClawOpen());
         this._openBtn.whenReleased(new ClawStop());
         this._closeBtn.whenPressed(new ClawClose());
         this._closeBtn.whenReleased(new ClawStop());
-        this._climbingTgl.whenPressed(new ClimberToggle());
+        //this._climbingTgl.whenPressed(new ClimberToggle());
         this._openJack.whenPressed(new JackToggle());
     }
 
@@ -68,7 +70,8 @@ public class OI
 
     public double getElevator()
     {
-        return this._elevatorJoy.getY();
+        //return this._elevatorJoy.getY();
+        return 0;
     }
     //// TRIGGERING COMMANDS WITH BUTTONS
     // Once you have a button, it's trivial to bind it to a button in one of

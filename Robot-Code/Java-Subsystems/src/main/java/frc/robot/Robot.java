@@ -37,14 +37,14 @@ public class Robot extends TimedRobot
     @Override
     public void robotInit()
     {
-        oi = new OI();
         roller = new Roller();
         chassis = new Chassis();
         elevator = new Elevator();
         claw = new Claw();
-        climber = new Climber();
+        //climber = new Climber();
         jack = new Jack();
         CameraServer.getInstance().startAutomaticCapture().setResolution(640, 480);
+        oi = new OI();
     }
 
     /**

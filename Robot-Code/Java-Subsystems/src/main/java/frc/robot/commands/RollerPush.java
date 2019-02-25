@@ -14,7 +14,7 @@ import frc.robot.subsystems.*;
 public class RollerPush extends Command
 {
     private Roller _roller;
-    public static final double TIMEOUT = 0.4;
+    //public static final double TIMEOUT = 0.4;
     public static final double POWER = 0.7;
 
     public RollerPush()
@@ -28,7 +28,7 @@ public class RollerPush extends Command
     @Override
     protected void initialize()
     {
-        setTimeout(TIMEOUT);
+        //setTimeout(TIMEOUT);
         this._roller.set(POWER);
     }
 
@@ -43,7 +43,7 @@ public class RollerPush extends Command
     @Override
     protected boolean isFinished()
     {
-        return isTimedOut();
+        return false; //isTimedOut();
     }
 
     // Called once after isFinished returns true

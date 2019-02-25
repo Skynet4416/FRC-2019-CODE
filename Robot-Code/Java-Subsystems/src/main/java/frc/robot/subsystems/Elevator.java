@@ -26,8 +26,8 @@ public class Elevator extends Subsystem
             System.out.println("Elevator: invalid value recieved to drive: Rounding value to: " + power);
         }
         //Positive power goes up and negative goes down (Wanted outcome)
-        this._motor1.set(ControlMode.PercentOutput, power);
-        this._motor2.set(ControlMode.PercentOutput, power);
+        this._motor1.set(ControlMode.PercentOutput, -power);
+        this._motor2.set(ControlMode.PercentOutput, -power);
     }
 
     // Sets default command

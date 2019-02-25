@@ -19,7 +19,7 @@ public class ClimberToggle extends Command
     public ClimberToggle()
     {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.roller);
+        requires(Robot.climber);
         this._climber = Robot.climber;
     }
 
