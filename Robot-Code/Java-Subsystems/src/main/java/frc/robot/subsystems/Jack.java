@@ -18,31 +18,38 @@ public class Jack extends Subsystem
 {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    // Angle presets
-    private static final double ANGLE_MOD_1 = 1;
-    private static final double ANGLE_MOD_2 = 0;
     // Left and right servos
     private Servo _leftServo = new Servo(RobotMap.Motors.Jack.LEFT_SERVO);
     private Servo _rightServo = new Servo(RobotMap.Motors.Jack.RIGHT_SERVO);
-    // Are the servos on ANGLE_MOD_1 or ANGLE_MOD_2
-    private boolean isOpen = false;
+
+    public Jack()
+    {
+        this._leftServo.set(0.5);
+        this._rightServo.set(0.5);
+    }
 
     // Toggle the state of the jack and gives it a correct angle
-    public void toggle()
+    public void open()
     {
-        isOpen = !isOpen; // Toggles
-        if (isOpen)  // Should it be open now?
-        {
-            // Angle turns to 90
-            this._leftServo.set(ANGLE_MOD_1);
-            this._rightServo.set(ANGLE_MOD_2);
-        }
-        else
-        {
-            // Angle turns to 0
-            this._leftServo.set(ANGLE_MOD_2);
-            this._rightServo.set(ANGLE_MOD_1);
-        }
+        this._leftServo.set(1);
+        this._rightServo.set(0);
+    }
+
+    public void close()
+    {
+        this._leftServo.set(0);
+        this._rightServo.set(1);
+    }
+
+    public void stop()
+    {
+        this._leftServo.set(0.5);
+        this._rightServo.set(0.5);
+    }
+
+    public String getAngles()
+    {
+        return _leftServo.getAngle() + ", " + _rightServo.getAngle();
     }
 
     // Sets default command
@@ -50,5 +57,6 @@ public class Jack extends Subsystem
     public void initDefaultCommand()
     {
         // Set the default command for a subsystem here.
+        
     }
 }

@@ -50,17 +50,18 @@ public class RobotMap
 
         public class Elevator
         {
-            public static final int MOTOR1 = 4;
-            public static final int MOTOR2 = 5;
+            public static final int MASTER = 4;
+            public static final int SLAVE = 5;
         }
 
         public class Climber
         {
             public static final int COMPRESSOR = 0;
-            public static final int FORWARD_SOLENOID1 = 0;
-            public static final int REVERSE_SOLENOID1 = 0;
-            public static final int FORWARD_SOLENOID2 = 0;
-            public static final int REVERSE_SOLENOID2 = 0;
+            public static final int FORWARD_SOLENOID1 = 4;
+            public static final int REVERSE_SOLENOID1 = 5;
+            public static final int FORWARD_SOLENOID2 = 6;
+            public static final int REVERSE_SOLENOID2 = 7;
+            public static final int PCM_ID = 42;
         }
 
         public class Jack
@@ -77,8 +78,8 @@ public class RobotMap
     {
         public class Chassis
         {
-            public static final int LEFT_JOY = 0;
-            public static final int RIGHT_JOY = 2;
+            public static final int LEFT_JOY = 2;
+            public static final int RIGHT_JOY = 1;
         }
 
         public class Claw
@@ -95,7 +96,7 @@ public class RobotMap
 
         public class Elevator
         {
-            public static final int ELEVATOR_JOY = 1;
+            public static final int ELEVATOR_JOY = 0;
         }
 
         public class Climber

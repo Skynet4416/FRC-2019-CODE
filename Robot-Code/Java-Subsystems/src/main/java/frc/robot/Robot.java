@@ -41,9 +41,10 @@ public class Robot extends TimedRobot
         chassis = new Chassis();
         elevator = new Elevator();
         claw = new Claw();
-        //climber = new Climber();
+        climber = new Climber();
         jack = new Jack();
-        CameraServer.getInstance().startAutomaticCapture().setResolution(640, 480);
+        CameraServer.getInstance().startAutomaticCapture(0).setResolution(352, 240);
+        CameraServer.getInstance().startAutomaticCapture(1).setResolution(352, 240);
         oi = new OI();
     }
 
@@ -127,6 +128,5 @@ public class Robot extends TimedRobot
     @Override
     public void testPeriodic()
     {
-
     }
 }

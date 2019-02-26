@@ -18,7 +18,7 @@ public class ClimberStop extends Command
     public ClimberStop()
     {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.roller);
+        requires(Robot.climber);
         this._climber = Robot.climber;
     }
 

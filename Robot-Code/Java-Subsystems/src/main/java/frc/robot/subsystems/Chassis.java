@@ -9,9 +9,11 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motion.BufferedTrajectoryPointStream;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.DriveByJoy;
 
@@ -36,6 +38,9 @@ public class Chassis extends Subsystem
         this._leftSlave.set(ControlMode.Follower, this._leftMaster.getDeviceID());
         this._rightSlave.setInverted(true);
         this._leftSlave.setInverted(true);
+        //configs the encoders
+        _rightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        _leftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
     }
 
     // Controls the chassis in tank drive
@@ -49,6 +54,7 @@ public class Chassis extends Subsystem
         }
         this._rightMaster.set(ControlMode.PercentOutput, right);
         this._leftMaster.set(ControlMode.PercentOutput, left);
+        this.updateDashboard();
     }
 
     // Sets motion profiling for the chassis
@@ -69,6 +75,12 @@ public class Chassis extends Subsystem
     public boolean isMotionProfileFinished()
     {
         return this._leftMaster.isMotionProfileFinished() || this._rightMaster.isMotionProfileFinished();
+    }
+
+    public void updateDashboard()
+    {
+        SmartDashboard.putNumber("Right Count", _rightMaster.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Left Count", -1 * _leftMaster.getSelectedSensorPosition());
     }
     
     // Sets default command

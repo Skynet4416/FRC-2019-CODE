@@ -8,13 +8,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.subsystems.Climber;
 
 public class ClimberToggle extends Command
 {
     private Climber _climber;
-    public static final double TIMEOUT = 0.5;
+    public static final double TIMEOUT = 1;
 
     public ClimberToggle()
     {
@@ -27,9 +28,9 @@ public class ClimberToggle extends Command
     @Override
     protected void initialize()
     {
-        this._climber.toggleSolenoid();
         setTimeout(TIMEOUT);
-        
+        SmartDashboard.putBoolean("Pneu", true);
+        this._climber.toggleSolenoid();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -51,7 +52,7 @@ public class ClimberToggle extends Command
     @Override
     protected void end()
     {
-        
+        SmartDashboard.putBoolean("Pneu", false);
     }
 
     // Called when another command which requires one or more of the same
@@ -60,5 +61,6 @@ public class ClimberToggle extends Command
     protected void interrupted()
     {
         // stopped by interupter
+        SmartDashboard.putBoolean("Pneu", false);
     }
 }

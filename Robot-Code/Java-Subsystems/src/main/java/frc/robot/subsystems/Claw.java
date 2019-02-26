@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -22,6 +23,11 @@ public class Claw extends Subsystem
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     private TalonSRX _clawMotor = new TalonSRX(RobotMap.Motors.Claw.MOTOR);
+
+    public Claw()
+    {
+        _clawMotor.configSelectedFeedbackSensor(FeedbackDevice.PulseWidthEncodedPosition);
+    }
     /**
      * Powers the claw with supplied input
      * 
@@ -38,6 +44,10 @@ public class Claw extends Subsystem
             System.out.println("Claw: Power input is out of range: Rounding power to: " + power);
         }
         this._clawMotor.set(ControlMode.PercentOutput, power);
+    }
+    public double getEncoder()
+    {
+        return _clawMotor.getSelectedSensorPosition();
     }
 
     // Sets default command

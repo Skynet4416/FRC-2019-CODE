@@ -17,6 +17,7 @@ import frc.robot.subsystems.*;
 public class JackToggle extends Command 
 {
     private Jack _jack;
+    public final double TIMEOUT = 0.3;
 
     public JackToggle()
     {
@@ -29,28 +30,29 @@ public class JackToggle extends Command
     @Override
     protected void initialize()
     {
-        this._jack.toggle();
+        this._jack.open();
+        this.setTimeout(TIMEOUT);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute()
     {
-
+        System.out.println(this._jack.getAngles());
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished()
     {
-        return false;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end()
     {
-
+        this._jack.stop();
     }
 
     // Called when another command which requires one or more of the same
@@ -58,6 +60,6 @@ public class JackToggle extends Command
     @Override
     protected void interrupted()
     {
-        
+        this._jack.stop();
     }
 }

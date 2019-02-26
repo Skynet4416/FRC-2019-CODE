@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.subsystems.*;
 
@@ -34,7 +35,7 @@ public class ClawOpen extends Command
     @Override
     protected void execute()
     {
-
+        SmartDashboard.putNumber("Claw Count", _claw.getEncoder());
     }
 
     // Make this return true when this Command no longer needs to run execute()

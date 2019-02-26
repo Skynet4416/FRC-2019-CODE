@@ -2,9 +2,11 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.ElevatorByJoy;
 
@@ -13,9 +15,14 @@ import frc.robot.commands.ElevatorByJoy;
  */
 public class Elevator extends Subsystem 
 {
-    private TalonSRX _motor1 = new TalonSRX(RobotMap.Motors.Elevator.MOTOR1); // Talon1
-    private TalonSRX _motor2 = new TalonSRX(RobotMap.Motors.Elevator.MOTOR2); // Talon2
+    private TalonSRX _master = new TalonSRX(RobotMap.Motors.Elevator.MASTER); // Talon1
+    private TalonSRX _slave = new TalonSRX(RobotMap.Motors.Elevator.SLAVE); // Talon2
 
+    public Elevator()
+    {
+        _slave.set(ControlMode.Follower, _master.getBaseID());
+        _master.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+    }
     public void set(double power)
     {
         if (Math.abs(power) > 1)
@@ -26,8 +33,12 @@ public class Elevator extends Subsystem
             System.out.println("Elevator: invalid value recieved to drive: Rounding value to: " + power);
         }
         //Positive power goes up and negative goes down (Wanted outcome)
-        this._motor1.set(ControlMode.PercentOutput, -power);
-        this._motor2.set(ControlMode.PercentOutput, -power);
+        this._master.set(ControlMode.PercentOutput, -power);
+        SmartDashboard.putNumber("Elev Count", this.getEncoder());
+    }
+    public double getEncoder()
+    {
+        return _master.getSelectedSensorPosition();
     }
 
     // Sets default command
