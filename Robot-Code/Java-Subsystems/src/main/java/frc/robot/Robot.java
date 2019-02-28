@@ -8,9 +8,13 @@
 package frc.robot;
 
 import frc.robot.subsystems.*;
+
+import java.util.HashMap;
+
 import edu.wpi.first.cameraserver.*;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,13 +34,37 @@ public class Robot extends TimedRobot
     public static Climber climber;
     public static Jack jack;
 
+    private static void displayDashboardNum(String key, double defaultValue)
+    {
+        SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, defaultValue));
+    }
+
+    public static final HashMap<String, Double> dashboardEntries = new HashMap<String, Double>()
+    {
+        private static final long serialVersionUID = 1L;
+        {
+            put("elev_kp", 0.0);
+            put("elev_ki", 0.0);
+            put("elev_kd", 0.0);
+            put("claw_kp", 0.0);
+            put("claw_ki", 0.0);
+            put("claw_kd", 0.0);
+            put("Static", 0.3);
+        }
+    }; 
     /**
      * This function is run when the robot is first started up and should be used
      * for any initialization code.
      */
+    
     @Override
     public void robotInit()
     {
+        //init smartdashboard values
+        for (String key : dashboardEntries.keySet())
+        {
+            displayDashboardNum(key, dashboardEntries.get(key));
+        }
         roller = new Roller();
         chassis = new Chassis();
         elevator = new Elevator();

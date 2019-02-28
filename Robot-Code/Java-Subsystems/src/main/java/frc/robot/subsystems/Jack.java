@@ -24,8 +24,8 @@ public class Jack extends Subsystem
 
     public Jack()
     {
-        this._leftServo.set(0.5);
-        this._rightServo.set(0.5);
+        this._leftServo.set(0.4);
+        this._rightServo.set(0.6);
     }
 
     // Toggle the state of the jack and gives it a correct angle
@@ -37,14 +37,8 @@ public class Jack extends Subsystem
 
     public void close()
     {
-        this._leftServo.set(0);
-        this._rightServo.set(1);
-    }
-
-    public void stop()
-    {
-        this._leftServo.set(0.5);
-        this._rightServo.set(0.5);
+        this._leftServo.set(0.4);
+        this._rightServo.set(0.6);
     }
 
     public String getAngles()

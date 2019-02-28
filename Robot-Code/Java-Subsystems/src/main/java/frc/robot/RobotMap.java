@@ -109,4 +109,24 @@ public class RobotMap
             public static final int TGL_JACK = 4;
         }
     }
+
+    public class PIDConstants
+    {
+        public class Chassis
+        {
+        }
+
+        public class Claw
+        {
+            public static final int A_CHANNEL = 1;
+            public static final int B_CHANNEL = 0;
+        }
+
+        public class Elevator
+        {
+            public static final int A_CHANNEL = 2;
+            public static final int B_CHANNEL = 3; 
+        }
+
+    }
 }

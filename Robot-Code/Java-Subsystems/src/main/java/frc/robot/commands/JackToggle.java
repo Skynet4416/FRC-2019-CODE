@@ -52,7 +52,7 @@ public class JackToggle extends Command
     @Override
     protected void end()
     {
-        this._jack.stop();
+        //this._jack.stop();
     }
 
     // Called when another command which requires one or more of the same
@@ -60,6 +60,6 @@ public class JackToggle extends Command
     @Override
     protected void interrupted()
     {
-        this._jack.stop();
+        //this._jack.stop();
     }
 }
