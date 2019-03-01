@@ -43,7 +43,12 @@ public class OI
     private Button _climbingTgl = new JoystickButton(_elevatorJoy, RobotMap.Controls.Climber.PNEU_TGL_BTN);
     // Toggle jack
     private Button _openJack = new JoystickButton(_elevatorJoy, RobotMap.Controls.Jack.TGL_JACK);
-
+    
+    private Button _clawTestButton = new JoystickButton(_leftJoy, 1);
+    //private Button _clawCloseButton = new JoystickButton(_leftJoy, 3);
+    //private Button _clawCargoButton = new JoystickButton(_leftJoy, 4);
+    //private Button _clawPanelButton = new JoystickButton(_leftJoy, 5);
+    
     public OI()
     {
         this._pushBtn.whenPressed(new RollerPush());

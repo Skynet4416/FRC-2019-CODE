@@ -25,9 +25,9 @@ public class Claw extends PIDSubsystem
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     private TalonSRX _clawMotor = new TalonSRX(RobotMap.Motors.Claw.MOTOR);
-	private Encoder _encoder = new Encoder(RobotMap.PIDConstants.Claw.A_CHANNEL, RobotMap.PIDConstants.Claw.B_CHANNEL, true, EncodingType.k4X);
-	public static final double TOLERANCE = 15;
-	public static final double DEGREES_PER_TICK = 360.0 / 1024;
+	private Encoder _encoder = new Encoder(RobotMap.Sensors.Claw.A_CHANNEL, RobotMap.Sensors.Claw.B_CHANNEL, true, EncodingType.k4X);
+	public static final double TOLERANCE = 0.2;
+    public static final double DEGREES_PER_TICK = 360.0 / 4096;
     /**
      * Powers the claw with supplied input
      * 
@@ -42,10 +42,11 @@ public class Claw extends PIDSubsystem
 			SmartDashboard.getNumber("claw_kd", 0));
 		// makes range not overflow the motors
 		setOutputRange(-1, 1);
-		setAbsoluteTolerance(TOLERANCE);
+        setAbsoluteTolerance(TOLERANCE);
 
 		//configures encoder
-		_encoder.setDistancePerPulse(DEGREES_PER_TICK);
+        this._encoder.setDistancePerPulse(DEGREES_PER_TICK);
+        SmartDashboard.putBoolean("ClawPID", false);
 	}
 	
     public void set(double power)
@@ -62,19 +63,20 @@ public class Claw extends PIDSubsystem
 	
     public double getEncoder()
     {
-        return _encoder.getDistance();
+        return this._encoder.getDistance();
     }
 
     @Override
 	protected double returnPIDInput()
 	{
-        return 0;
+        return this.getEncoder();
     }
 
     @Override
 	protected void usePIDOutput(double output)
 	{
-        
+        //set(output);
+        this._clawMotor.set(ControlMode.PercentOutput, output);
     }
 
     // Sets default command

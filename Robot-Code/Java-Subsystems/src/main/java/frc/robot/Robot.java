@@ -49,7 +49,7 @@ public class Robot extends TimedRobot
             put("claw_kp", 0.0);
             put("claw_ki", 0.0);
             put("claw_kd", 0.0);
-            put("Static", 0.3);
+            put("Static", 0.0);
         }
     }; 
     /**

@@ -110,12 +110,13 @@ public class RobotMap
         }
     }
 
-    public class PIDConstants
+    public class Sensors
     {
         public class Chassis
         {
-        }
 
+        }
+        
         public class Claw
         {
             public static final int A_CHANNEL = 1;
@@ -126,7 +127,7 @@ public class RobotMap
         {
             public static final int A_CHANNEL = 2;
             public static final int B_CHANNEL = 3; 
+            public static final int SWITCH = 5;
         }
-
     }
 }

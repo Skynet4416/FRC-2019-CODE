@@ -10,55 +10,61 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.Claw;
 
-public class ElevatorByJoy extends Command 
+public class ClawPid extends Command
 {
-    private Elevator _elevator;
-    public static final double ZERO_VALUE = 0;  // Value in which the elevator will stay put
+    private Claw _claw;
+    private double _setpoint;
+    public static final double TIMEOUT = 2;
 
-    public ElevatorByJoy()
+    public ClawPid(double setpoint)
     {
+        super();
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.elevator);
-        this._elevator = Robot.elevator;
+        // eg. requires(chassis);
+        requires(Robot.claw);
+        this._setpoint = setpoint;
+        this._claw = Robot.claw;
     }
 
-    // Called just before this Command runs the first time
+    // Called once when the command executes
     @Override
     protected void initialize()
     {
-
+        this._claw.setSetpoint(this._setpoint);
+        this._claw.enable();
+        SmartDashboard.putBoolean("ClawPID", true);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute()
     {
-        SmartDashboard.putNumber("elev_joy", Robot.oi.getElevator());
-        this._elevator.set(Robot.oi.getElevator() + ZERO_VALUE);
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished()
     {
-        return false;
+        return isTimedOut();
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end()
     {
-
+        this._claw.disable();
+        SmartDashboard.putBoolean("ClawPID", false);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
-    //When interrupted - Elevator gets stuck
     @Override
     protected void interrupted()
     {
-        this._elevator.set(ZERO_VALUE);
+        this._claw.disable();
+        SmartDashboard.putBoolean("ClawPID", false);
     }
 }
