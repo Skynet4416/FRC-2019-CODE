@@ -8,26 +8,29 @@ VISION_START_KEY = "captureProfiles"
 LEFT_PROFILE_KEYS = ["leftProfile_0", "leftProfile_1", "leftProfile_2"]
 RIGHT_PROFILE_KEYS = ["rightProfile_0", "rightProfile_1", "rightProfile_2"]
 
-VISION_TABLE = None
+vision_table = None
 profile_listener_cond_var = None
 profile_listener_state = False
 
 
 def init_and_wait():
-    """A blocking function that will init and wait"""
-    global VISION_TABLE
-    VISION_TABLE = NetworkTables.getTable(VISION_TABLE_NAME)
+    """
+    A blocking function that will init and wait
+    """
+    global vision_table
+    vision_table = NetworkTables.getTable(VISION_TABLE_NAME)
     cond = threading.Condition()
     notified = [False]
 
-    def connectionListener(connected, info):
+    def connection_listener(connected, info):
         print("Connected: {} \n info : {}".format(connected, info))
         with cond:
             notified[0] = True
             cond.notify()
 
     NetworkTables.initialize(server=SKYNET_IP)
-    NetworkTables.addConnectionListener(connectionListener, immediateNotify=True)
+    NetworkTables.addConnectionListener(connection_listener,
+                                        immediateNotify=True)
 
     with cond:
         if not notified[0]:
@@ -35,21 +38,29 @@ def init_and_wait():
 
 
 def get_bool(key: str, default: bool) -> bool:
-    if VISION_TABLE is None:
+    """
+    Gets a boolean value from the table if initiated
+    """
+    if vision_table is None:
         print("vision_table wasn't initialized, please use init")
         return
-    return VISION_TABLE.getBoolean(key, default)
+    return vision_table.getBoolean(key, default)
 
 
 def set_bool(key: str, value: bool):
-    if VISION_TABLE is None:
+    """
+    Sets a boolean value in the table if initiated
+    """
+    if vision_table is None:
         print("vision_table wasn't initialized, please use init")
         return
-    VISION_TABLE.putBoolean(key, value)
+    vision_table.putBoolean(key, value)
 
 
-def profile_request_listener(table, key, value, isNew):
-    """A listener for waiting for the profile bool to be true"""
+def profile_request_listener(table, key, value, is_new):
+    """
+    A listener for waiting for the profile bool to be true
+    """
     if key != VISION_START_KEY:
         return
 
@@ -60,8 +71,10 @@ def profile_request_listener(table, key, value, isNew):
 
 
 def wait_for_profile_request():
-    """Wait for a motion profile request from the main robot"""
-    if VISION_TABLE is None:
+    """
+    Waits for a motion profile request from the main robot
+    """
+    if vision_table is None:
         raise Exception("vision_table wasn't initialized, please use init")
 
     global profile_listener_cond_var
@@ -75,21 +88,25 @@ def wait_for_profile_request():
         if not profile_listener_state:
             profile_listener_cond_var.wait()
 
-    PROFILE_LISTENER_STATE = False
+    profile_listener_state = False
 
 
-def send_motion_profiles(leftProfile, rightProfile):
-    """Sends the motion profiles to the network table and turns off the required flag
-    :param leftProfile, rightProfile: motion profiling profiles. Arrays sized 100x3"""
-    if VISION_TABLE is None:
+def send_motion_profiles(left_profile, right_profile):
+    """
+    Sends the motion profiles to the network table
+    and turns off the required flag
+    :param left_profile: motion profiling profile. Array sized 100x3
+    :param right_profile: same as left profile
+    """
+    if vision_table is None:
         raise Exception("vision_table wasn't initialized, please use init")
-    
-    leftEntries = [NetworkTables.getEntry(key) for key in LEFT_PROFILE_KEYS]
-    rightEntries = [NetworkTables.getEntry(key) for key in RIGHT_PROFILE_KEYS]
+
+    left_entries = [NetworkTables.getEntry(key) for key in LEFT_PROFILE_KEYS]
+    right_entries = [NetworkTables.getEntry(key) for key in RIGHT_PROFILE_KEYS]
 
     for i in range(3):
-        leftEntries[i].putDoubleArray(leftProfile[i])
-        rightEntries[i].putDoubleArray(rightProfile[i])
+        left_entries[i].putDoubleArray(left_profile[i])
+        right_entries[i].putDoubleArray(right_profile[i])
 
     set_bool(VISION_START_KEY, False)
 
