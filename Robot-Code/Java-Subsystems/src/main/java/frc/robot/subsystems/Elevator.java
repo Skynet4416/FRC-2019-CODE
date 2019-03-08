@@ -22,7 +22,8 @@ public class Elevator extends PIDSubsystem
     private Encoder _encoder = new Encoder(RobotMap.Sensors.Elevator.A_CHANNEL, RobotMap.Sensors.Elevator.B_CHANNEL, false, EncodingType.k4X);
     private DigitalInput _buttomSwitch = new DigitalInput(RobotMap.Sensors.Elevator.SWITCH);
     public static final double TOLERANCE = 15;
-	public static final double DISTANCE_PER_TICK = 0.00762 * Math.PI / 2048;
+    public static final double DISTANCE_PER_TICK = 0.00762 * Math.PI / 2048;
+    public static final double STATIC_POWER = -0.05;
 
     public Elevator()
     {
@@ -31,10 +32,12 @@ public class Elevator extends PIDSubsystem
             SmartDashboard.getNumber("elev_kd", 0));
         this._slave.set(ControlMode.Follower, this._master.getDeviceID());
         this._encoder.setDistancePerPulse(DISTANCE_PER_TICK);
+        _encoder.reset();
     }
 
     public void set(double power)
     {
+        double staticPower = SmartDashboard.getNumber("Static", 0);
         if (Math.abs(power) > 1)
         {
             // Makes it either 1 or -1 (basically copysign of power to 1)
@@ -44,13 +47,18 @@ public class Elevator extends PIDSubsystem
         }
         else if (Math.abs(power) < 0.4)
         {
-            power = SmartDashboard.getNumber("Static", 0);
+            power = STATIC_POWER;
         }
-        SmartDashboard.putBoolean("elev_switch", _buttomSwitch.get());
-        if (_buttomSwitch.get())
+        SmartDashboard.putBoolean("elev_switch", !_buttomSwitch.get());
+        if (!_buttomSwitch.get())
         {
             // negative brings the motor up
-            power = Math.min(power, 0);
+            power = Math.min(power, staticPower);
+        }
+        if (Math.abs(_encoder.getDistance()) < 0.3)
+        {
+            // extra barrier to not slam the elevator downwards
+            power = Math.min(power, 0.15);
         }
         //Positive power goes up and negative goes down (Wanted outcome)
         this._master.set(ControlMode.PercentOutput, power);
@@ -61,6 +69,16 @@ public class Elevator extends PIDSubsystem
     public double getEncoder()
     {
         return this._encoder.getDistance();
+    }
+
+    public boolean getSwitch()
+    {
+        return this._buttomSwitch.get();
+    }
+
+    public void setZero()
+    {
+        this._encoder.reset();
     }
 
     @Override

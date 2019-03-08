@@ -12,6 +12,7 @@ import frc.robot.subsystems.*;
 import java.util.HashMap;
 
 import edu.wpi.first.cameraserver.*;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,6 +34,7 @@ public class Robot extends TimedRobot
     public static Claw claw;
     public static Climber climber;
     public static Jack jack;
+    public static PowerDistributionPanel pdp = new PowerDistributionPanel();
 
     private static void displayDashboardNum(String key, double defaultValue)
     {
@@ -65,6 +67,7 @@ public class Robot extends TimedRobot
         {
             displayDashboardNum(key, dashboardEntries.get(key));
         }
+        SmartDashboard.putBoolean("Initiated", false);
         roller = new Roller();
         chassis = new Chassis();
         elevator = new Elevator();

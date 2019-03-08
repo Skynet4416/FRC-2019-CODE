@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.HandleJack;
 
 /**
  Jack subsystem
@@ -24,19 +25,27 @@ public class Jack extends Subsystem
 
     public Jack()
     {
+        this._leftServo.setAngle(50);
+        this._rightServo.setAngle(50);
     }
 
     // Toggle the state of the jack and gives it a correct angle
     public void open()
     {
-        this._leftServo.set(1);
-        this._rightServo.set(0);
+        this._leftServo.setAngle(0);
+        this._rightServo.setAngle(170);
     }
 
     public void close()
     {
-        this._leftServo.set(0.6);
-        this._rightServo.set(0.4);
+        this._leftServo.setAngle(85);
+        this._rightServo.setAngle(85);
+    }
+
+    public void halt()
+    {
+        this._leftServo.setAngle(50);
+        this._rightServo.setAngle(50);
     }
 
     public String getAngles()
@@ -49,6 +58,6 @@ public class Jack extends Subsystem
     public void initDefaultCommand()
     {
         // Set the default command for a subsystem here.
-        
+        setDefaultCommand(new HandleJack());
     }
 }

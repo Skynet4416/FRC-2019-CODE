@@ -12,7 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.RollerStop;
+import frc.robot.commands.RollerByTrigger;
 
 /**
  * Add your docs here.
@@ -58,6 +58,6 @@ public class Roller extends Subsystem
     public void initDefaultCommand()
     {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new RollerStop());
+        setDefaultCommand(new RollerByTrigger());
     }
 }

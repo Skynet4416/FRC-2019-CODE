@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
-import frc.robot.commands.ClimberStop;
+import frc.robot.commands.HandleClimber;;
 
 /**
  * Climber class
@@ -66,6 +66,6 @@ public class Climber extends Subsystem
     {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new DriveByJoy());
-        setDefaultCommand(new ClimberStop());
+        setDefaultCommand(new HandleClimber());
     }
 }

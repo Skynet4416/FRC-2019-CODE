@@ -8,8 +8,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.*;
 import frc.robot.commands.*;
+import frc.robot.subsystems.Claw;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -32,36 +35,14 @@ public class OI
     private Joystick _leftJoy = new Joystick(RobotMap.Controls.Chassis.LEFT_JOY);
     private Joystick _rightJoy = new Joystick(RobotMap.Controls.Chassis.RIGHT_JOY);
     // Elevator joystick
-    private Joystick _elevatorJoy = new Joystick(RobotMap.Controls.Elevator.ELEVATOR_JOY);
-    // Roller gripper buttons
-    private Button _pushBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Roller.PUSH_BTN);
-    private Button _pullBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Roller.PULL_BTN);
-    // Claw buttons
-    private Button _openBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Claw.OPEN_BTN);
-    private Button _closeBtn = new JoystickButton(_elevatorJoy, RobotMap.Controls.Claw.CLOSE_BTN);
+    private XboxController _systemsXbox = new XboxController(RobotMap.Controls.Elevator.ELEVATOR_CONTROL);
     // Toggle climbing
-    private Button _climbingTgl = new JoystickButton(_elevatorJoy, RobotMap.Controls.Climber.PNEU_TGL_BTN);
+    private Button _climbingTgl = new JoystickButton(_systemsXbox, RobotMap.Controls.Climber.PNEU_TGL_BTN);
     // Toggle jack
-    private Button _openJack = new JoystickButton(_elevatorJoy, RobotMap.Controls.Jack.TGL_JACK);
+    private Button _openJack = new JoystickButton(_systemsXbox, RobotMap.Controls.Jack.TGL_JACK);
     
-    private Button _clawTestButton = new JoystickButton(_leftJoy, 1);
-    //private Button _clawCloseButton = new JoystickButton(_leftJoy, 3);
-    //private Button _clawCargoButton = new JoystickButton(_leftJoy, 4);
-    //private Button _clawPanelButton = new JoystickButton(_leftJoy, 5);
-    
-    public OI()
-    {
-        this._pushBtn.whenPressed(new RollerPush());
-        this._pushBtn.whenReleased(new RollerStop());
-        this._pullBtn.whenPressed(new RollerPull());
-        this._pullBtn.whenReleased(new RollerStop());
-        this._openBtn.whenPressed(new ClawOpen());
-        this._openBtn.whenReleased(new ClawStop());
-        this._closeBtn.whenPressed(new ClawClose());
-        this._closeBtn.whenReleased(new ClawStop());
-        this._climbingTgl.whenPressed(new ClimberToggle());
-        this._openJack.whenPressed(new JackToggle());
-    }
+    private Button _clawPanelButton = new JoystickButton(_leftJoy, 11);
+    public static enum ButtonStatus {pressed, released, none};
 
     public double getLeft()
     {
@@ -77,9 +58,55 @@ public class OI
 
     public double getElevator()
     {
-        return this._elevatorJoy.getY();
+        return this._systemsXbox.getY(Hand.kLeft);
         //return 0;
     }
+
+    public double getRoller()
+    {
+        return this._systemsXbox.getTriggerAxis(Hand.kRight) - this._systemsXbox.getTriggerAxis(Hand.kLeft);
+    }
+
+    public Claw.State getClaw()
+    {
+        if (Math.abs(getRoller()) > 0.5)
+        {
+            return Claw.State.cargo;
+        }
+        if (_systemsXbox.getRawButton(RobotMap.Controls.Claw.CLOSE_BTN))
+        {
+            return Claw.State.closed;
+        }
+        if (_systemsXbox.getRawButton(RobotMap.Controls.Claw.HATCH_BTN))
+        {
+            return Claw.State.panel;
+        }
+        return Claw.State.none;
+    }
+
+    public double getClawJoy()
+    {
+        return _systemsXbox.getY(Hand.kRight);
+    }
+
+    public boolean getJack()
+    {
+        return _systemsXbox.getRawButton(RobotMap.Controls.Jack.TGL_JACK);
+    }
+
+    public ButtonStatus getClimber()
+    {
+        if (_systemsXbox.getRawButtonPressed(RobotMap.Controls.Climber.PNEU_TGL_BTN))
+        {
+            return ButtonStatus.pressed;
+        }
+        if (_systemsXbox.getRawButtonReleased(RobotMap.Controls.Climber.PNEU_TGL_BTN))
+        {
+            return ButtonStatus.released;
+        }
+        return ButtonStatus.none;
+    }
+
     //// TRIGGERING COMMANDS WITH BUTTONS
     // Once you have a button, it's trivial to bind it to a button in one of
     // three ways:

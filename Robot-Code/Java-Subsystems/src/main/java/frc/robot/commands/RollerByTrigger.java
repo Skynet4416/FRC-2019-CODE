@@ -9,57 +9,64 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.Roller;
 
-/*
- Jack toggler basically
-*/
-public class JackToggle extends Command 
+public class RollerByTrigger extends Command
 {
-    private Jack _jack;
-    public final double TIMEOUT = 0.3;
+    Roller _roller;
 
-    public JackToggle()
+    public RollerByTrigger()
     {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.jack);
-        this._jack = Robot.jack;
+        // eg. requires(chassis);
+        requires(Robot.roller);
+        _roller = Robot.roller;
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize()
     {
-        this._jack.open();
-        this.setTimeout(TIMEOUT);
+
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute()
     {
-        System.out.println(this._jack.getAngles());
+        if (Robot.oi.getRoller() > 0.5)
+        {
+            Robot.roller.set(1);
+        }
+        else if (Robot.oi.getRoller() < -0.5)
+        {
+            Robot.roller.set(-1);
+        }
+        else
+        {
+            Robot.roller.set(0);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished()
     {
-        return isTimedOut();
+        return false;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end()
     {
-        //this._jack.stop();
+
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
-    protected void interrupted()
+    protected void interrupted() 
     {
-        //this._jack.stop();
+        
     }
 }

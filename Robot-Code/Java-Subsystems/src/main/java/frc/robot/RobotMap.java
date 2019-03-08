@@ -79,34 +79,34 @@ public class RobotMap
         public class Chassis
         {
             public static final int LEFT_JOY = 2;
-            public static final int RIGHT_JOY = 1;
+            public static final int RIGHT_JOY = 0;
         }
 
         public class Claw
         {
-            public static final int OPEN_BTN = 5;
-            public static final int CLOSE_BTN = 3;
+            public static final int CLOSE_BTN = 5;
+            public static final int HATCH_BTN = 6;
         }
 
         public class Roller
         {
-            public static final int PUSH_BTN = 1;
-            public static final int PULL_BTN = 2;
+            public static final int PUSH_VAL = -1;
+            public static final int PULL_VAL = 1;
         }
 
         public class Elevator
         {
-            public static final int ELEVATOR_JOY = 0;
+            public static final int ELEVATOR_CONTROL = 1;
         }
 
         public class Climber
         {
-            public static final int PNEU_TGL_BTN = 6;
+            public static final int PNEU_TGL_BTN = 7;
         }
 
         public class Jack
         {
-            public static final int TGL_JACK = 4;
+            public static final int TGL_JACK = 8;
         }
     }
 
@@ -121,6 +121,7 @@ public class RobotMap
         {
             public static final int A_CHANNEL = 1;
             public static final int B_CHANNEL = 0;
+            public static final int SWITCH = 6;
         }
 
         public class Elevator

@@ -37,6 +37,10 @@ public class ElevatorByJoy extends Command
     {
         SmartDashboard.putNumber("elev_joy", Robot.oi.getElevator());
         this._elevator.set(Robot.oi.getElevator() + ZERO_VALUE);
+        if(!this._elevator.getSwitch())
+        {
+            this._elevator.setZero();
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
