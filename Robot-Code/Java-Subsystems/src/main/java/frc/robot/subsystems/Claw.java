@@ -31,13 +31,14 @@ public class Claw extends PIDSubsystem
     public static final double TOLERANCE = 0; // no tolerance means active resistance to game objects
     public static final double DEGREES_PER_TICK = 360.0 / 4096;
     public enum State {panel, cargo, closed, none};
-    public static boolean initiated = false;
-    public static final double PANEL_VAL = -1.93359375; //11.4;
-    public static final double CARGO_VAL = -6.71; //6.9;
-    public static final double CLOSE_VAL = 0; //13.4;
-    public static final double KP = 0.3;
-    public static final double KI = 0.003;
-    public static final double KD = 0.2;
+    private static boolean initiated = false;
+    private boolean _isEnabled = false;
+    public static final double PANEL_VAL = -2.08; //11.4;
+    public static final double CARGO_VAL = -6.2; //6.9;
+    public static final double CLOSE_VAL = -0.5; //13.4;
+    public static final double KP = 0.1;
+    public static final double KI = 0.004;
+    public static final double KD = 0.25;
     /**
      * Powers the claw with supplied input
      * 
@@ -76,6 +77,7 @@ public class Claw extends PIDSubsystem
         if (Claw.initiated)
         {
             enable();
+            _isEnabled = true;
             setSetpoint(point);
         }
     }
@@ -98,7 +100,16 @@ public class Claw extends PIDSubsystem
     
     public void set(double power)
     {
-        disable();
+        if (_closeSwitch.get())
+        {
+            power = Math.min(0, power);
+            setZero();
+        }
+        if (_isEnabled)
+        {
+            _isEnabled = false;
+            disable();
+        }
         _clawMotor.set(ControlMode.PercentOutput, (power / Math.abs(power)) * 0.2);
     }
 	
@@ -117,7 +128,7 @@ public class Claw extends PIDSubsystem
 	protected void usePIDOutput(double output)
 	{
         //set(output);
-        this._clawMotor.set(ControlMode.PercentOutput, output);
+        _clawMotor.set(ControlMode.PercentOutput, output);
     }
 
     // Sets default command

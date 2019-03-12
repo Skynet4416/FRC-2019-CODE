@@ -43,7 +43,7 @@ public class ClawPid extends Command
     protected void execute()
     {
         SmartDashboard.putNumber("Claw Count", _claw.getEncoder());
-        SmartDashboard.putNumber("Claw Current", Robot.pdp.getCurrent(RobotMap.Motors.Claw.MOTOR));
+        //SmartDashboard.putNumber("Claw Current", Robot.pdp.getCurrent(RobotMap.Motors.Claw.MOTOR));
         /*if (Robot.pdp.getCurrent(RobotMap.Motors.Claw.MOTOR) > MAX_CURRENT)
         {
             _claw.set(0);
@@ -53,30 +53,23 @@ public class ClawPid extends Command
         double stickVal = Robot.oi.getClawJoy();
         SmartDashboard.putNumber("Stick value", stickVal);
         //Positive closes
-        if (-stickVal > 0.2)
+        if (stickVal < -0.2)
         {
             SmartDashboard.putBoolean("ClawSwitch", false);
             
-            _claw.set(Robot.oi.getClawJoy());
+            _claw.set(stickVal/4);
             _clawState = Claw.State.none;
-        }
-        else if (this._claw.getSwitch())
-        {
-            SmartDashboard.putBoolean("ClawSwitch", true);
-            this._claw.set(0);
-            this._claw.setZero();
         }
         else if (stickVal > 0.2)
         {
             SmartDashboard.putBoolean("ClawSwitch", false);
             
-            _claw.set(Robot.oi.getClawJoy());
+            _claw.set(stickVal);
             _clawState = Claw.State.none;
         }
-        else if (_clawState != Robot.oi.getClaw())
+        else if (_clawState != Robot.oi.getClaw() && Robot.oi.getClaw() != Claw.State.none)
         {
-            SmartDashboard.putBoolean("ClawSwitch", false);
-            
+            //SmartDashboard.putBoolean("ClawSwitch", false);
             _clawState = Robot.oi.getClaw();
             _claw.set(_clawState);
         }

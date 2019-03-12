@@ -67,9 +67,14 @@ public class OI
         return this._systemsXbox.getTriggerAxis(Hand.kRight) - this._systemsXbox.getTriggerAxis(Hand.kLeft);
     }
 
+    public boolean getElevX()
+    {
+        return _systemsXbox.getXButton();
+    }
+
     public Claw.State getClaw()
     {
-        if (Math.abs(getRoller()) > 0.5)
+        if (getRoller() < -0.5)
         {
             return Claw.State.cargo;
         }
@@ -92,6 +97,11 @@ public class OI
     public boolean getJack()
     {
         return _systemsXbox.getRawButton(RobotMap.Controls.Jack.TGL_JACK);
+    }
+
+    public boolean getButtom()
+    {
+        return false; // _systemsXbox.getRawButton(RobotMap.Controls.Elevator.BUTTOM_BTN);
     }
 
     public ButtonStatus getClimber()

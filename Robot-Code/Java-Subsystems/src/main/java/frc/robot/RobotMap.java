@@ -78,8 +78,8 @@ public class RobotMap
     {
         public class Chassis
         {
-            public static final int LEFT_JOY = 2;
-            public static final int RIGHT_JOY = 0;
+            public static final int LEFT_JOY = 1;
+            public static final int RIGHT_JOY = 2;
         }
 
         public class Claw
@@ -96,7 +96,8 @@ public class RobotMap
 
         public class Elevator
         {
-            public static final int ELEVATOR_CONTROL = 1;
+            public static final int ELEVATOR_CONTROL = 0;
+            public static final int BUTTOM_BTN = 1;
         }
 
         public class Climber

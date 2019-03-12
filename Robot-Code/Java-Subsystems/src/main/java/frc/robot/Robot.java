@@ -34,7 +34,7 @@ public class Robot extends TimedRobot
     public static Claw claw;
     public static Climber climber;
     public static Jack jack;
-    public static PowerDistributionPanel pdp = new PowerDistributionPanel();
+    //public static PowerDistributionPanel pdp = new PowerDistributionPanel();
 
     private static void displayDashboardNum(String key, double defaultValue)
     {
@@ -63,6 +63,7 @@ public class Robot extends TimedRobot
     public void robotInit()
     {
         //init smartdashboard values
+        SmartDashboard.putString("Reached", "0");
         for (String key : dashboardEntries.keySet())
         {
             displayDashboardNum(key, dashboardEntries.get(key));
@@ -74,8 +75,8 @@ public class Robot extends TimedRobot
         claw = new Claw();
         climber = new Climber();
         jack = new Jack();
-        CameraServer.getInstance().startAutomaticCapture(0).setResolution(352, 240);
-        CameraServer.getInstance().startAutomaticCapture(1).setResolution(352, 240);
+        CameraServer.getInstance().startAutomaticCapture(0);//.setResolution(352, 240);
+        CameraServer.getInstance().startAutomaticCapture(1);//.setResolution(352, 240);
         oi = new OI();
     }
 

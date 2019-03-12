@@ -15,6 +15,7 @@ import frc.robot.subsystems.*;
 public class ElevatorByJoy extends Command 
 {
     private Elevator _elevator;
+    private boolean _isPID;
     public static final double ZERO_VALUE = 0;  // Value in which the elevator will stay put
 
     public ElevatorByJoy()
@@ -28,7 +29,7 @@ public class ElevatorByJoy extends Command
     @Override
     protected void initialize()
     {
-
+        _isPID = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -36,6 +37,17 @@ public class ElevatorByJoy extends Command
     protected void execute()
     {
         SmartDashboard.putNumber("elev_joy", Robot.oi.getElevator());
+        if (Robot.oi.getElevX())
+        {
+            _isPID = true;
+            _elevator.goToHatch();
+            return;
+        }
+        if (_isPID && Math.abs(Robot.oi.getElevator()) < 0.2)
+        {
+            return;
+        }
+        _isPID = false;
         this._elevator.set(Robot.oi.getElevator() + ZERO_VALUE);
         if(!this._elevator.getSwitch())
         {
