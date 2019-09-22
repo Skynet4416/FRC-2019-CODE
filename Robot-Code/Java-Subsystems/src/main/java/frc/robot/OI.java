@@ -36,14 +36,17 @@ public class OI
     
     public static enum ButtonStatus {pressed, released, none};
 
+    //Reduce motor power
+    public static final double chassisInputMultiplier = 0.25;
+
     public double getLeft()
     {
-        return this._systemsXbox.getY(Hand.kLeft) * 0.25;
+        return this._systemsXbox.getY(Hand.kLeft) * chassisInputMultiplier;
     }
 
     public double getRight()
     {
-        return this._systemsXbox.getY(Hand.kRight) * 0.25;
+        return this._systemsXbox.getY(Hand.kRight) * chassisInputMultiplier;
     }
 
     public double getRoller()
