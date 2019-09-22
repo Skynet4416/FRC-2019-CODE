@@ -43,7 +43,9 @@ public class OI
 
     public double getRight()
     {
-        return this._systemsXbox.getY(Hand.kRight) * 0.5;
+        return this._systemsXbox.getY(Hand.kRight) * 0.25;
+    }
+
     public double getRoller()
     {
         return this._systemsXbox.getTriggerAxis(Hand.kRight) - this._systemsXbox.getTriggerAxis(Hand.kLeft);
@@ -71,7 +73,6 @@ public class OI
         //return _systemsXbox.getY(Hand.kRight);
     }
         // return ButtonStatus.none;
-    }
 
     //// TRIGGERING COMMANDS WITH BUTTONS
     // Once you have a button, it's trivial to bind it to a button in one of

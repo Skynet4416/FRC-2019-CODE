@@ -66,6 +66,9 @@ public class RobotMap
     {
         public class Chassis
         {
+            public static final int BluetoothXbox = 1;
+        }
+
         public class Claw
         {
             public static final int CLOSE_BTN = 5;
@@ -77,17 +80,10 @@ public class RobotMap
             public static final int PUSH_VAL = -1;
             public static final int PULL_VAL = 1;
         }
-            public static final int BluetoothXbox = 1;
-        }
     }
 
     public class Sensors
-    {
-        public class Chassis
-        {
-
-        }
-        
+    {   
         public class Claw
         {
             public static final int A_CHANNEL = 1;
