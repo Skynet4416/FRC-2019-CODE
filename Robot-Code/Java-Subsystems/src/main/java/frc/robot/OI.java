@@ -44,13 +44,13 @@ public class OI
 
     public double getLeft()
     {
-        return this._systemsXbox.getY(Hand.kLeft) * 0.1;
+        return this._systemsXbox.getY(Hand.kLeft) * 0.5;
         //return 0;
     }
 
     public double getRight()
     {
-        return this._systemsXbox.getY(Hand.kRight) * 0.1;
+        return this._systemsXbox.getY(Hand.kRight) * 0.5;
         //return 0;
     }
 
@@ -66,24 +66,26 @@ public class OI
 
     public Claw.State getClaw()
     {
-        if (getRoller() < -0.5)
-        {
-            return Claw.State.cargo;
-        }
-        if (_systemsXbox.getRawButton(RobotMap.Controls.Claw.CLOSE_BTN))
-        {
-            return Claw.State.closed;
-        }
-        if (_systemsXbox.getRawButton(RobotMap.Controls.Claw.HATCH_BTN))
-        {
-            return Claw.State.panel;
-        }
         return Claw.State.none;
+        // if (getRoller() < -0.5)
+        // {
+        //     return Claw.State.cargo;
+        // }
+        // if (_systemsXbox.getRawButton(RobotMap.Controls.Claw.CLOSE_BTN))
+        // {
+        //     return Claw.State.closed;
+        // }
+        // if (_systemsXbox.getRawButton(RobotMap.Controls.Claw.HATCH_BTN))
+        // {
+        //     return Claw.State.panel;
+        // }
+        // return Claw.State.none;
     }
 
     public double getClawJoy()
     {
-        return _systemsXbox.getY(Hand.kRight);
+        return 0;
+        //return _systemsXbox.getY(Hand.kRight);
     }
 
     public boolean getButtom()
@@ -93,15 +95,17 @@ public class OI
 
     public ButtonStatus getClimber()
     {
-        if (_systemsXbox.getRawButtonPressed(RobotMap.Controls.Climber.PNEU_TGL_BTN))
-        {
-            return ButtonStatus.pressed;
-        }
-        if (_systemsXbox.getRawButtonReleased(RobotMap.Controls.Climber.PNEU_TGL_BTN))
-        {
-            return ButtonStatus.released;
-        }
         return ButtonStatus.none;
+
+        // if (_systemsXbox.getRawButtonPressed(RobotMap.Controls.Climber.PNEU_TGL_BTN))
+        // {
+        //     return ButtonStatus.pressed;
+        // }
+        // if (_systemsXbox.getRawButtonReleased(RobotMap.Controls.Climber.PNEU_TGL_BTN))
+        // {
+        //     return ButtonStatus.released;
+        // }
+        // return ButtonStatus.none;
     }
 
     //// TRIGGERING COMMANDS WITH BUTTONS
