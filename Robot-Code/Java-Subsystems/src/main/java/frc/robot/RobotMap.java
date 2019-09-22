@@ -66,7 +66,7 @@ public class RobotMap
     {
         public class Chassis
         {
-            public static final int BluetoothXbox = 1;
+            public static final int XboxPort = 1;
         }
 
         public class Claw
