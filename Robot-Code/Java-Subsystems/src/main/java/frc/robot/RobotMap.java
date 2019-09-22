@@ -48,12 +48,6 @@ public class RobotMap
             public static final int RIGHT = 8;
         }
 
-        public class Elevator
-        {
-            public static final int MASTER = 4;
-            public static final int SLAVE = 5;
-        }
-
         public class Climber
         {
             public static final int COMPRESSOR = 0;
@@ -62,12 +56,6 @@ public class RobotMap
             public static final int FORWARD_SOLENOID2 = 6;
             public static final int REVERSE_SOLENOID2 = 7;
             public static final int PCM_ID = 42;
-        }
-
-        public class Jack
-        {
-            public static final int LEFT_SERVO = 0;
-            public static final int RIGHT_SERVO = 1;
         }
     }
 
@@ -104,11 +92,6 @@ public class RobotMap
         {
             public static final int PNEU_TGL_BTN = 7;
         }
-
-        public class Jack
-        {
-            public static final int TGL_JACK = 8;
-        }
     }
 
     public class Sensors
@@ -123,13 +106,6 @@ public class RobotMap
             public static final int A_CHANNEL = 1;
             public static final int B_CHANNEL = 0;
             public static final int SWITCH = 6;
-        }
-
-        public class Elevator
-        {
-            public static final int A_CHANNEL = 2;
-            public static final int B_CHANNEL = 3; 
-            public static final int SWITCH = 5;
         }
     }
 }

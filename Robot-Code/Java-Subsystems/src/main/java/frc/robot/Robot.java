@@ -30,10 +30,8 @@ public class Robot extends TimedRobot
     public static OI oi;
     public static Roller roller;
     public static Chassis chassis;
-    public static Elevator elevator;
     public static Claw claw;
     public static Climber climber;
-    public static Jack jack;
     //public static PowerDistributionPanel pdp = new PowerDistributionPanel();
 
     private static void displayDashboardNum(String key, double defaultValue)
@@ -71,10 +69,8 @@ public class Robot extends TimedRobot
         SmartDashboard.putBoolean("Initiated", false);
         roller = new Roller();
         chassis = new Chassis();
-        elevator = new Elevator();
         claw = new Claw();
         climber = new Climber();
-        jack = new Jack();
         CameraServer.getInstance().startAutomaticCapture(0);//.setResolution(352, 240);
         CameraServer.getInstance().startAutomaticCapture(1);//.setResolution(352, 240);
         oi = new OI();

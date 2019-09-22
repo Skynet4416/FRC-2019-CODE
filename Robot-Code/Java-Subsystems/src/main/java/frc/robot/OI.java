@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.*;
-import frc.robot.commands.*;
+//import frc.robot.commands.*;
 import frc.robot.subsystems.Claw;
 
 /**
@@ -38,8 +38,6 @@ public class OI
     private XboxController _systemsXbox = new XboxController(RobotMap.Controls.Elevator.ELEVATOR_CONTROL);
     // Toggle climbing
     private Button _climbingTgl = new JoystickButton(_systemsXbox, RobotMap.Controls.Climber.PNEU_TGL_BTN);
-    // Toggle jack
-    private Button _openJack = new JoystickButton(_systemsXbox, RobotMap.Controls.Jack.TGL_JACK);
     
     private Button _clawPanelButton = new JoystickButton(_leftJoy, 11);
     public static enum ButtonStatus {pressed, released, none};
@@ -92,11 +90,6 @@ public class OI
     public double getClawJoy()
     {
         return _systemsXbox.getY(Hand.kRight);
-    }
-
-    public boolean getJack()
-    {
-        return _systemsXbox.getRawButton(RobotMap.Controls.Jack.TGL_JACK);
     }
 
     public boolean getButtom()
