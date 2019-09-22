@@ -44,19 +44,13 @@ public class OI
 
     public double getLeft()
     {
-        return this._leftJoy.getY();
+        return this._systemsXbox.getY(Hand.kLeft) * 0.1;
         //return 0;
     }
 
     public double getRight()
     {
-        return this._rightJoy.getY();
-        //return 0;
-    }
-
-    public double getElevator()
-    {
-        return this._systemsXbox.getY(Hand.kLeft);
+        return this._systemsXbox.getY(Hand.kRight) * 0.1;
         //return 0;
     }
 
