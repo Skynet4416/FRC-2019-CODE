@@ -32,7 +32,7 @@ public class OI
     // by subclassing Button you can create custom triggers and bind those to
     // commands the same as any other Button.
     // Chassis joystick
-    private XboxController _systemsXbox = new XboxController(RobotMap.Controls.Chassis.BluetoothXbox);
+    private XboxController _systemsXbox = new XboxController(RobotMap.Controls.Chassis.XboxPort);
     
     public static enum ButtonStatus {pressed, released, none};
 
