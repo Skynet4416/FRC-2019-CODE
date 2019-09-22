@@ -31,39 +31,23 @@ public class OI
     // There are a few additional built in buttons you can use. Additionally,
     // by subclassing Button you can create custom triggers and bind those to
     // commands the same as any other Button.
-    //  Chassis joysticks
-    private Joystick _leftJoy = new Joystick(RobotMap.Controls.Chassis.LEFT_JOY);
-    private Joystick _rightJoy = new Joystick(RobotMap.Controls.Chassis.RIGHT_JOY);
-    // Elevator joystick
-    private XboxController _systemsXbox = new XboxController(RobotMap.Controls.Elevator.ELEVATOR_CONTROL);
-    // Toggle climbing
-    private Button _climbingTgl = new JoystickButton(_systemsXbox, RobotMap.Controls.Climber.PNEU_TGL_BTN);
+    // Chassis joystick
+    private XboxController _systemsXbox = new XboxController(RobotMap.Controls.Chassis.BluetoothXbox);
     
-    private Button _clawPanelButton = new JoystickButton(_leftJoy, 11);
     public static enum ButtonStatus {pressed, released, none};
 
     public double getLeft()
     {
-        return this._systemsXbox.getY(Hand.kLeft) * 0.5;
-        //return 0;
+        return this._systemsXbox.getY(Hand.kLeft) * 0.25;
     }
 
     public double getRight()
     {
         return this._systemsXbox.getY(Hand.kRight) * 0.5;
-        //return 0;
-    }
-
     public double getRoller()
     {
         return this._systemsXbox.getTriggerAxis(Hand.kRight) - this._systemsXbox.getTriggerAxis(Hand.kLeft);
     }
-
-    public boolean getElevX()
-    {
-        return _systemsXbox.getXButton();
-    }
-
     public Claw.State getClaw()
     {
         return Claw.State.none;
@@ -81,30 +65,11 @@ public class OI
         // }
         // return Claw.State.none;
     }
-
     public double getClawJoy()
     {
         return 0;
         //return _systemsXbox.getY(Hand.kRight);
     }
-
-    public boolean getButtom()
-    {
-        return false; // _systemsXbox.getRawButton(RobotMap.Controls.Elevator.BUTTOM_BTN);
-    }
-
-    public ButtonStatus getClimber()
-    {
-        return ButtonStatus.none;
-
-        // if (_systemsXbox.getRawButtonPressed(RobotMap.Controls.Climber.PNEU_TGL_BTN))
-        // {
-        //     return ButtonStatus.pressed;
-        // }
-        // if (_systemsXbox.getRawButtonReleased(RobotMap.Controls.Climber.PNEU_TGL_BTN))
-        // {
-        //     return ButtonStatus.released;
-        // }
         // return ButtonStatus.none;
     }
 

@@ -30,7 +30,6 @@ public class Robot extends TimedRobot
     public static Roller roller;
     public static Chassis chassis;
     public static Claw claw;
-    public static Climber climber;
 
     private static void displayDashboardNum(String key, double defaultValue)
     {
@@ -68,7 +67,6 @@ public class Robot extends TimedRobot
         roller = new Roller();
         chassis = new Chassis();
         claw = new Claw();
-        climber = new Climber();
         CameraServer.getInstance().startAutomaticCapture(0);//.setResolution(352, 240);
         CameraServer.getInstance().startAutomaticCapture(1);//.setResolution(352, 240);
         oi = new OI();
